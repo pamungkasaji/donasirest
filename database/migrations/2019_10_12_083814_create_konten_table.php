@@ -25,6 +25,7 @@ class CreateKontenTable extends Migration
             $table->integer('terkumpul')->default(0);
             $table->integer('lama_donasi');
             $table->string('nomorrekening');
+            $table->boolean('is_verif')->default(0);
             //$table->date('created_at');
 
             $table->timestamps();

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Konten;
 use App\Http\Resources\KontenResource; 
+use Illuminate\Support\Facades\Validator;
 // use JWTAuth;
 
 class KontenController extends Controller
@@ -19,35 +20,35 @@ class KontenController extends Controller
 
     public function index()
     {
-        //coba salah satu
-        //$products = auth()->user()->products;
-        
         $konten = Konten::with('user')->get();
  
-        return response()->json($konten,200);
+        //return response()->json($konten,200);
 
-        // $pages = Page::all();;
-
-        // return Response::json(array(
-        //     'status' => 'success',
-        //     'pages' => $pages->toArray()),
-        //     200
-        // );
-
-        //return KontenResource::collection(Konten::with('user','perkembangan')->paginate(5));
-        //return new KontenResource(Konten::with('user','perkembangan')->paginate(5));
-        //return KontenResource::collection(Konten::paginate(5));
-        
-        
+        return response()->json([
+            'success' => true,
+            'message' => 'Daftar konten penggalangan dana',
+            'data' => $konten
+        ],200);
     }
 
     public function store(Request $request)
     {
-        //cara pendek, dengan resource
-        // $konten = Konten::create($request->all());
-        // return new KontenResource($konten);
+        $validator = Validator::make($request->all(), [
+            'judul' => 'required',
+            'deskripsi' => 'required',
+            'id_user' => 'required',
+            'target' => 'required',
+            'lama_donasi' => 'required',
+            'nomorrekening' => 'required',
+        ]);
 
-        //cara 2
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lengkapi formulir dengan benar',
+            ], 422);
+        }
+
         $konten = new Konten();
 
         //$judul_slug = str_slug($request->judul,"-");
@@ -55,46 +56,108 @@ class KontenController extends Controller
         $file_path = '../storage/images/konten';
         $path = $request->file('gambar')->move($file_path, $file_name);
         $urlgambar = url('/storage/images/konten/'.$file_name);
+        $konten->gambar = $urlgambar;
 
         $konten->id_user = $request->id_user;
         $konten->judul = $request->judul;
         $konten->deskripsi = $request->deskripsi;
         $konten->target = $request->target;
-        
-        $konten->gambar = $urlgambar;
         $konten->lama_donasi = $request->lama_donasi;
         $konten->nomorrekening = $request->nomorrekening;
 
-        $konten->save();
- 
-        return response()->json([
-            'success' => true,
-            'message' => 'Tunggu verifikasi kami',
-            'data' => $konten
-        ], 201);
+        if ($konten->save()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Tunggu verifikasi kami',
+                'data' => $konten
+            ], 201);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan',
+            ], 404);
+        }
     }
 
     public function show($id)
     {
-        //coba salah satu
+        $konten = Konten::with('user')->find($id);
+ 
+        if (!$konten) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Penggalangan Dana tidak ditemukan'
+            ], 400);
+        }
+     
+        //return response()->json($konten,200);
 
-        return new KontenResource(Konten::with('user','perkembangan')->find($id));
-        //return new KontenResource($konten);
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail konten penggalangan dana',
+            'data' => $konten
+        ],200);
+
+        //cara pendek
+        //return Konten::with('user')->find($id);
     }
 
-    public function update(Konten $konten, Request $request)
+    public function update(Request $request, $id)
     {
-        //
-        $konten->update($request->all());
+        // $konten = Konten::find($id);
+ 
+        // if (!$konten) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Konten penggalangan dana tidak ditemukan'
+        //     ], 404);
+        // }
 
-        return new KontenResource($konten);
+        // //if ($konten->update($request->input('is_verif'))) {
+
+        // if ($konten->is_verif = $verifikasi) {
+        //     return response()->json([
+        //         'success' => true,
+        //         'message' => 'Update berhasil',
+        //         'data' => $konten
+        //     ], 200);
+        // } else {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Terjadi kesalahan update',
+        //     ], 500);
+        // }
+
+        // $konten->update($request->all());
+
+        // return new KontenResource($konten);
     }
 
-    public function destroy(Konten $konten)
+    public function destroy($id)
     {
-        //
-        $konten->delete();
+        $konten = Konten::find($id);
+ 
+        if (!$konten) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Konten penggalangan dana tidak ditemukan'
+            ], 404);
+        }
+    
+        if ($konten->delete()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Konten penggalangan dana berhasil dihapus'
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Konten penggalangan dana tidak dapat dihapus'
+            ], 500);
+        }
 
-        return response()->json();
+        // $konten->delete();
+
+        // return response()->json();
     }
 }

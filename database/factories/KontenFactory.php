@@ -16,5 +16,6 @@ $factory->define(Konten::class, function (Faker $faker) {
         'terkumpul' => $faker->numberBetween( 2000000, 4000000),
         'lama_donasi' => $faker->numberBetween( 30, 90),
         'nomorrekening' => $faker->randomNumber(8),
+        'is_verif' => $faker->boolean($chanceOfGettingTrue = 70),
     ];
 });

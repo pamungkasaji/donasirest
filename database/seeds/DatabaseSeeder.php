@@ -13,7 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         //seeding diurutkan dari user -> konten -> perkembangan -> donatur
 
-        //$this->call(UsersTableSeeder::class);
         //factory( \App\User::class , 5 )->create();
         //factory( \App\Konten::class , 10 )->create();
         //factory( \App\Perkembangan::class , 20 )->create();
