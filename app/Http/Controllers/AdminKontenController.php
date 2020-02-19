@@ -16,37 +16,37 @@ class AdminKontenController extends Controller
     {
 
         $konten = Konten::find($id);
-
-        $konten->is_verif = 1;
-
-        $konten->save();
-
-        // $konten = Konten::find($id);
  
-        // if (!$konten) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'Konten penggalangan dana tidak ditemukan'
-        //     ], 404);
-        // }
+        if (!$konten) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Konten penggalangan dana tidak ditemukan'
+            ], 404);
+        }
 
-        // //if ($konten->update($request->input('is_verif'))) {
+        // if ($konten->update($request->all())) {
 
-        // if ($konten->is_verif = $verifikasi) {
-        //     return response()->json([
-        //         'success' => true,
-        //         'message' => 'Update berhasil',
-        //         'data' => $konten
-        //     ], 200);
-        // } else {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'Terjadi kesalahan update',
-        //     ], 500);
-        // }
+        if(!empty($request->is_verif)){
+            var_dump($request->is_verif);
+            $konten->is_verif = $request->is_verif;
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan update',
+            ], 500);
+        }
 
-        // $konten->update($request->all());
-
-        // return new KontenResource($konten);
+        if ($konten->save()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Update berhasil',
+                'data' => $konten
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan update',
+            ], 500);
+        }
     }
 }

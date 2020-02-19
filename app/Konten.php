@@ -9,7 +9,7 @@ class Konten extends Model
     //
     protected $fillable = [
         'judul','deskripsi','gambar','target','lama_donasi', 'nomorrekening',
-        'id_user',
+        'id_user', 'is_verif',
     ];
 
     protected $table = 'konten';

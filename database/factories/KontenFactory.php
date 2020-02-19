@@ -9,7 +9,7 @@ $factory->define(Konten::class, function (Faker $faker) {
     return [
         //
         'judul' => $faker->sentence,
-        'deskripsi' => $faker->paragraph,
+        'deskripsi' => $faker->text,
         'id_user' => $faker->numberBetween( 1, 5),
         'gambar' => $faker->imageUrl( 800, 600 ),
         'target' => $faker->numberBetween( 5000000, 80000000),

@@ -39,6 +39,7 @@ class KontenController extends Controller
             'id_user' => 'required',
             'target' => 'required',
             'lama_donasi' => 'required',
+            'gambar' => 'required',
             'nomorrekening' => 'required',
         ]);
 
@@ -104,29 +105,28 @@ class KontenController extends Controller
 
     public function update(Request $request, $id)
     {
-        // $konten = Konten::find($id);
+        $konten = Konten::find($id);
  
-        // if (!$konten) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'Konten penggalangan dana tidak ditemukan'
-        //     ], 404);
-        // }
+        if (!$konten) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Konten penggalangan dana tidak ditemukan'
+            ], 404);
+        }
 
-        // //if ($konten->update($request->input('is_verif'))) {
-
-        // if ($konten->is_verif = $verifikasi) {
-        //     return response()->json([
-        //         'success' => true,
-        //         'message' => 'Update berhasil',
-        //         'data' => $konten
-        //     ], 200);
-        // } else {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'Terjadi kesalahan update',
-        //     ], 500);
-        // }
+        if($request->has('is_verif')) {
+            ($konten->update(['is_verif' => $request->is_verif]));
+            return response()->json([
+                'success' => true,
+                'message' => 'Update berhasil',
+                'data' => $konten
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan update',
+            ], 500);
+        }
 
         // $konten->update($request->all());
 
@@ -160,4 +160,15 @@ class KontenController extends Controller
 
         // return response()->json();
     }
+
+    // public function destroy(Product $product, Category $category)
+    // {
+    //     if (!$product->categories()->find($category->id)) {
+    //         return $this->errorResponse('The specified category is not a category of this product', 404);
+    //     }
+
+    //     $product->categories()->detach($category->id);
+
+    //     return $this->showAll($product->categories);
+    // }
 }
