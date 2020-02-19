@@ -14,7 +14,7 @@ class AuthApiController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|unique:users',
+            'username' => 'required',
             'password' => 'required|string|min:6|max:20',
             'namalengkap' => 'required',
             'alamat' => 'required',
@@ -27,6 +27,13 @@ class AuthApiController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Lengkapi formulir dengan benar',
+            ], 422);
+        }
+
+        if($user = User::where('username',$request->username)->first()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Username sudah digunakan',
             ], 422);
         }
 
