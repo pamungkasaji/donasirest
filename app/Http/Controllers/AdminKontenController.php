@@ -24,19 +24,8 @@ class AdminKontenController extends Controller
             ], 404);
         }
 
-        // if ($konten->update($request->all())) {
-
-        if(!empty($request->is_verif)){
-            var_dump($request->is_verif);
-            $konten->is_verif = $request->is_verif;
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan update',
-            ], 500);
-        }
-
-        if ($konten->save()) {
+        if($request->has('is_verif')) {
+            ($konten->update(['is_verif' => $request->is_verif]));
             return response()->json([
                 'success' => true,
                 'message' => 'Update berhasil',

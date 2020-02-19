@@ -21,8 +21,6 @@ class KontenController extends Controller
     public function index()
     {
         $konten = Konten::with('user')->get();
- 
-        //return response()->json($konten,200);
 
         return response()->json([
             'success' => true,
@@ -53,7 +51,7 @@ class KontenController extends Controller
         $konten = new Konten();
 
         //$judul_slug = str_slug($request->judul,"-");
-        $file_name = str_slug($request->judul,"-").'_'.$request->id_user.'.jpg';
+        $file_name = str_slug($request->judul).'_konten_'.$request->id_user.'.jpg';
         $file_path = '../storage/images/konten';
         $path = $request->file('gambar')->move($file_path, $file_name);
         $urlgambar = url('/storage/images/konten/'.$file_name);
@@ -98,9 +96,6 @@ class KontenController extends Controller
             'message' => 'Detail konten penggalangan dana',
             'data' => $konten
         ],200);
-
-        //cara pendek
-        //return Konten::with('user')->find($id);
     }
 
     public function update(Request $request, $id)
@@ -127,10 +122,6 @@ class KontenController extends Controller
                 'message' => 'Terjadi kesalahan update',
             ], 500);
         }
-
-        // $konten->update($request->all());
-
-        // return new KontenResource($konten);
     }
 
     public function destroy($id)
@@ -152,23 +143,8 @@ class KontenController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Konten penggalangan dana tidak dapat dihapus'
+                'message' => 'Terjadi kesalahan penghapusan konten'
             ], 500);
         }
-
-        // $konten->delete();
-
-        // return response()->json();
     }
-
-    // public function destroy(Product $product, Category $category)
-    // {
-    //     if (!$product->categories()->find($category->id)) {
-    //         return $this->errorResponse('The specified category is not a category of this product', 404);
-    //     }
-
-    //     $product->categories()->detach($category->id);
-
-    //     return $this->showAll($product->categories);
-    // }
 }

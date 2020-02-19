@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('nomorktp');
             $table->string('nohp');
             $table->string('fotoktp');
-            $table->boolean('is_verif');
+            $table->boolean('is_verif')->default(0);
             //$table->dateTime('created_at');
 
             $table->timestamps();

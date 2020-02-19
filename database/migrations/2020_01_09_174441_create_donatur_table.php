@@ -18,7 +18,7 @@ class CreateDonaturTable extends Migration
             $table->unsignedBigInteger('id_konten');
             $table->string('nama');
             $table->boolean('is_anonim');
-            $table->boolean('is_diterima');
+            $table->boolean('is_diterima')->default(0);
             $table->integer('jumlah');
             $table->string('bukti');
             //$table->dateTime('created_at');

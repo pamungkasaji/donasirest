@@ -6,89 +6,81 @@ use App\Konten;
 use App\Donatur;
 use App\Http\Resources\DonaturResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DonaturController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Konten $konten) {
-        //
+    // public function __construct()
+    // {
+    //     $this->user = JWTAuth::parseToken()->authenticate();
+    // }
+
+    public function index(Konten $konten) 
+    {    
         $donatur = $konten->donatur()->get();
 
         return response()->json([
-            'message' => 'Daftar donatur masuk',
             'success' => true,
+            'message' => 'Daftar donatur masuk',
             'data' => $donatur
         ],200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Konten $konten, Request $request) {
-        
-        //cara 1
-        $this->validate($request, [
-            //'nama' => 'required',
+    public function store(Konten $konten, Request $request) 
+    {
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required',
             'is_anonim' => 'required',
-            'is_diterima' => 'required',
-            'jumlah' => 'required'
-            //'bukti' => 'required',
-            //'id_konten' => 'required'
+            'jumlah' => 'required',
+            'bukti' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lengkapi formulir dengan benar',
+            ], 422);
+        }
 
         $donatur = new Donatur();
 
-        $file_name = $request->nama.'_donatur_.jpg';
+        $file_name = str_slug($request->nama).'_donatur.jpg';
         $file_path = '../storage/images/donatur';
         $path = $request->file('bukti')->move($file_path, $file_name);
         $urlgambar = url('/storage/images/donatur/'.$file_name);
 
-        // $donatur->id_user = $request->id_user;
-        // $donatur->judul = $request->judul;
-        // $donatur->deskripsi = $request->deskripsi;
-        // $donatur->target = $request->target;
-
-        $donatur = $konten->donatur()->create($request->all());
+        $donatur->nama = $request->nama;
+        $donatur->is_anonim = $request->is_anonim;
+        $donatur->jumlah = $request->jumlah;
+        $donatur->bukti = $request->bukti;
 
         $donatur->bukti = $urlgambar;
 
-        if ($donatur->save()) {
+        if ($konten->donatur()->save($donatur)) {
             $response = [
-                'message' => "Tunggu verifikasi penggalang dana",
                 'success' => true,
+                'message' => "Tunggu verifikasi penggalang dana",
                 'donatur' => $donatur
             ];
             return response()->json($response,201);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan donasi',
+            ], 404);
         }
-
-        $response = [
-            'message' => 'Terjadi kesalahan penambahan donatur',
-            'success' => false
-        ];
-
-        return response()->json($response, 404);
-
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Donatur  $donatur
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Konten $konten, Donatur $donatur)
+    public function show(Konten $konten, $id)
     {
-        //
-        //$donatur = $konten->donatur()->find($id_donatur);
-
         $donatur = $konten->donatur()->find($id);
+
+        if (!$donatur) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Donatur tidak ditemukan'
+            ], 400);
+        }
 
         return response()->json([
             'message' => 'Informasi donatur',
@@ -97,44 +89,53 @@ class DonaturController extends Controller
         ],200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Donatur  $donatur
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Konten $konten, Donatur $donatur)
+    public function update(Request $request, Konten $konten, $id)
     {
-        //kurang autorisasi
+        $donatur = $konten->donatur()->find($id);
 
-        $donatur->update($request->validate([
-            'is_diterima' => 'required',
-        ]));
+        if (!$donatur) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Donatur tidak ditemukan'
+            ], 404);
+        }
 
-        return response()->json([
-            'message' => 'Donasi diterima',
-            'success' => true,
-            'donatur' => $donatur
-        ],200);
+        if($request->has('is_diterima')) {
+            ($donatur->update(['is_diterima' => $request->is_diterima]));
+            return response()->json([
+                'success' => true,
+                'message' => 'Validasi donatur berhasil',
+                'data' => $donatur
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan validasi donatur',
+            ], 500);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Donatur  $donatur
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Konten $konten, Donatur $donatur)
+    public function destroy(Konten $konten, $id)
     {
-        //
-        //$this->authorize('delete', $donatur);
+        $donatur = $konten->donatur()->find($id);
 
-        $donatur->delete();
-
-        return response()->json([
-            'message' => "Your answer has been removed",
-            'success' => true
-        ],200);
+        if (!$donatur) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Donatur tidak ditemukan'
+            ], 404);
+        }
+    
+        if ($donatur->delete()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Validasi donatur tidak diterima'
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan penghapusan konten'
+            ], 500);
+        }
     }
 }
