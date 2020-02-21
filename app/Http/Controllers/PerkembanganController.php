@@ -9,9 +9,26 @@ use App\Konten;
 use App\Http\Resources\PerkembanganResource; 
 use App\Http\Resources\KontenResource; 
 use Illuminate\Support\Facades\Validator;
+use JWTAuth;
 
 class PerkembanganController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth.jwt')->only('store, delete');
+    }
+
+    //mencari tahu apakan user memiliki akses ke konten
+    public function haveAccess(Konten $konten) {
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if (!$user->konten()->where('konten.id_user', $konten->id_user)->first()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public function index(Konten $konten)
     {
         $perkembangan = $konten->perkembangan()->get();
@@ -21,8 +38,6 @@ class PerkembanganController extends Controller
             'message' => 'Daftar perkembangan penggalangan dana',
             'data' => $perkembangan
         ],200);
-
-        //return PerkembanganResource::collection($konten->perkembangan);
     }
 
     public function store(Request $request, Konten $konten)
@@ -38,6 +53,13 @@ class PerkembanganController extends Controller
                 'success' => false,
                 'message' => 'Lengkapi form perkembangan',
             ], 422);
+        }
+
+        if( !$this->haveAccess($konten) ){
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak memiliki akses pada fitur ini'
+            ], 403);
         }
 
         $file_name = str_slug($request->judul).'_perkembangan.jpg';
@@ -77,6 +99,14 @@ class PerkembanganController extends Controller
             ], 404);
         }
     
+        //mencari tahu apakan user memiliki akses ke konten
+        if( !$this->haveAccess($konten) ){
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak memiliki akses pada fitur ini'
+            ], 403);
+        }
+
         if ($perkembangan->delete()) {
             return response()->json([
                 'success' => true,
