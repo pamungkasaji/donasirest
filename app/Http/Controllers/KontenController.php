@@ -8,19 +8,21 @@ use App\User;
 use App\Konten;
 use App\Http\Resources\KontenResource; 
 use Illuminate\Support\Facades\Validator;
-// use JWTAuth;
+use JWTAuth;
 
 class KontenController extends Controller
 {
 
-    // public function __construct()
-    // {
-    //     $this->user = JWTAuth::parseToken()->authenticate();
-    // }
+    //protected $user;
+
+    public function __construct()
+    {
+        $this->middleware('auth.jwt')->only('store, update, delete');
+    }
 
     public function index()
     {
-        $konten = Konten::with('user')->get();
+        $konten = Konten::with('user')->where('is_verif',true)->get();
 
         return response()->json([
             'success' => true,
@@ -34,7 +36,7 @@ class KontenController extends Controller
         $validator = Validator::make($request->all(), [
             'judul' => 'required',
             'deskripsi' => 'required',
-            'id_user' => 'required',
+            //'id_user' => 'required',
             'target' => 'required',
             'lama_donasi' => 'required',
             'gambar' => 'required',
@@ -48,6 +50,8 @@ class KontenController extends Controller
             ], 422);
         }
 
+        $user = JWTAuth::parseToken()->authenticate();
+
         $konten = new Konten();
 
         //$judul_slug = str_slug($request->judul,"-");
@@ -57,14 +61,14 @@ class KontenController extends Controller
         $urlgambar = url('/storage/images/konten/'.$file_name);
         $konten->gambar = $urlgambar;
 
-        $konten->id_user = $request->id_user;
+        //$konten->id_user = $request->id_user;
         $konten->judul = $request->judul;
         $konten->deskripsi = $request->deskripsi;
         $konten->target = $request->target;
         $konten->lama_donasi = $request->lama_donasi;
         $konten->nomorrekening = $request->nomorrekening;
 
-        if ($konten->save()) {
+        if ($user->konten()->save($konten)) {
             return response()->json([
                 'success' => true,
                 'message' => 'Tunggu verifikasi kami',
@@ -80,7 +84,7 @@ class KontenController extends Controller
 
     public function show($id)
     {
-        $konten = Konten::with('user')->find($id);
+        $konten = Konten::with('user')->where('is_verif',true)->find($id);
  
         if (!$konten) {
             return response()->json([
@@ -100,7 +104,9 @@ class KontenController extends Controller
 
     public function update(Request $request, $id)
     {
-        $konten = Konten::find($id);
+        $user = JWTAuth::parseToken()->authenticate();
+
+        $konten = $user->konten()->find($id);
  
         if (!$konten) {
             return response()->json([
@@ -126,7 +132,10 @@ class KontenController extends Controller
 
     public function destroy($id)
     {
-        $konten = Konten::find($id);
+        $user = JWTAuth::parseToken()->authenticate();
+
+        //$konten = Konten::find($id);
+        $konten = $user->konten()->find($id);
  
         if (!$konten) {
             return response()->json([

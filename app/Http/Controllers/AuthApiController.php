@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Validator;
-//use JWTAuth;
-//use Tymon\JWTAuth\Exceptions\JWTException;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthApiController extends Controller
 {
@@ -39,7 +39,7 @@ class AuthApiController extends Controller
 
         $user = new User();
         
-        $file_name = $request->username.'_ktp.jpg';
+        $file_name = str_slug($request->username).'_ktp.jpg';
         $file_path = '../storage/images/ktp';
         $path = $request->file('fotoktp')->move($file_path, $file_name);
         $urlgambar = url('/storage/images/ktp/'.$file_name);
@@ -84,7 +84,7 @@ class AuthApiController extends Controller
         }
 
         $username = $request->username;
-        $usernamelogin = new UserResource(user::where('username', $username)->first());
+        $usernamelogin = User::where('username', $username)->first();
  
         return response()->json([
             'success' => true,
@@ -95,33 +95,51 @@ class AuthApiController extends Controller
  
     public function logout(Request $request)
     {
-        $this->validate($request, [
-            'token' => 'required'
-        ]);
+        if (!$request->token) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token logout tidak ditemukan',
+            ], 401);
+        }
  
         try {
-            JWTAuth::invalidate($request->token);
+            JWTAuth::parseToken()->invalidate( $request->token );
+            //JWTAuth::invalidate($request->token);
  
             return response()->json([
                 'success' => true,
-                'message' => 'User logged out successfully'
+                'message' => 'Berhasil logout'
             ]);
         } catch (JWTException $exception) {
             return response()->json([
                 'success' => false,
-                'message' => 'Sorry, the user cannot be logged out'
+                'message' => 'Logout gagal'
             ], 500);
         }
     }
  
     public function getAuthUser(Request $request)
     {
-        $this->validate($request, [
-            'token' => 'required'
-        ]);
+        if (!$request->token) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token logout tidak ditemukan',
+            ], 401);
+        }
  
-        $user = JWTAuth::authenticate($request->token);
- 
-        return response()->json(['user' => $user]);
+        try {
+            $user = JWTAuth::parseToken()->authenticate($request->token);
+            return response()->json([
+                'success' => true,
+                'message' => 'Data user',
+                'user' => $user
+            ]);
+        } catch (JWTException $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data user gagal diperoleh'
+            ], 500);
+        }
+
     }
 }

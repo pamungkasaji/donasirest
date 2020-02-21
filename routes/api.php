@@ -13,36 +13,31 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-//   });
-  
+  // = belum
+
   Route::post('login', 'AuthApiController@login');
   Route::post('register', 'AuthApiController@register');
+  Route::get('logout', 'AuthApiController@logout');
+  Route::get('getAuthUser', 'AuthApiController@getAuthUser');//bisa, belum tentu dipakai
   
   Route::get('konten', 'KontenController@index');
   Route::get('konten/{id}', 'KontenController@show');
+  Route::post('konten', 'KontenController@store');
+  Route::put('konten/{id}', 'KontenController@update');//belum tentu dipakai, hanya admin
+  Route::delete('konten/{id}', 'KontenController@destroy');//belum tentu dipakai, hanya admin
 
   Route::get('konten/{konten}/donatur', 'DonaturController@index');
-  Route::get('konten/{konten}/donatur/{id}', 'DonaturController@show');
+  Route::get('konten/{konten}/donatur/{id}', 'DonaturController@show');//belum tentu digunakan
   Route::post('konten/{konten}/donatur', 'DonaturController@store');
+  Route::put('konten/{konten}/donatur/{id}', 'DonaturController@update');
+  Route::delete('konten/{konten}/donatur/{id}', 'DonaturController@destroy');
 
   Route::get('konten/{konten}/perkembangan', 'PerkembanganController@index');
-  
-//   Route::group(['middleware' => 'auth.jwt'], function () {
-    Route::get('logout', 'ApiController@logout');
-    Route::get('userinfo', 'ApiController@getAuthUser');
-  
-    Route::post('konten', 'KontenController@store');
-    Route::put('konten/{id}', 'KontenController@update');
-    Route::delete('konten/{id}', 'KontenController@destroy');
+  Route::post('konten/{konten}/perkembangan', 'PerkembanganController@store');
+  Route::delete('konten/{konten}/perkembangan/{id}', 'PerkembanganController@destroy');//belum tentu dipakai
 
-    Route::put('konten/{konten}/donatur/{id}', 'DonaturController@update');
-    Route::delete('konten/{konten}/donatur/{id}', 'DonaturController@destroy');
+  Route::get('user/me/konten', 'UserKontenController@index');
+  Route::get('user/me/konten/{id}', 'UserKontenController@show');
 
-    Route::post('konten/{konten}/perkembangan', 'PerkembanganController@store');
-
-    //belum tentu dipakai
-    Route::delete('konten/{konten}/perkembangan/{id}', 'PerkembanganController@destroy');
-  
-//   });
+  Route::get('user/{user}/konten/{konten}/donatur', 'UserDonaturController@index');//
+  Route::get('user/{user}/konten/{konten}/donatur/{$id}', 'UserDonaturController@show');//

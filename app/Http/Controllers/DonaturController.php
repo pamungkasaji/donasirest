@@ -7,17 +7,45 @@ use App\Donatur;
 use App\Http\Resources\DonaturResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use JWTAuth;
 
 class DonaturController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->user = JWTAuth::parseToken()->authenticate();
-    // }
+    public function __construct()
+    {
+        $this->middleware('auth.jwt')->only('update, delete');
+    }
+
+    //mencari tahu apakan user memiliki akses ke konten
+    public function haveAccess(Konten $konten) {
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if (!$user->konten()->where('konten.id_user', $konten->id_user)->first()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+        // //mencari tahu apakan user memiliki akses ke konten
+        // if (!$user->konten()->where('konten.id_user', $konten->id_user)->first()) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Anda tidak memiliki akses pada fitur ini'
+        //     ], 403);
+        // };
 
     public function index(Konten $konten) 
     {    
-        $donatur = $konten->donatur()->get();
+        //ambil daftar donatur yg sudah diterima
+        $donatur = $konten->donatur()->where('is_diterima',true)->get();
+
+        //ubah nama menjadi anonim untuk is_anonim true
+        foreach($donatur as $key => $value) { 
+            if ($donatur[$key]['is_anonim'] == true) {
+                $donatur[$key]['nama'] = 'anonim';
+            }
+        }
 
         return response()->json([
             'success' => true,
@@ -91,13 +119,19 @@ class DonaturController extends Controller
 
     public function update(Request $request, Konten $konten, $id)
     {
-        $donatur = $konten->donatur()->find($id);
-
-        if (!$donatur) {
+        if (!$donatur = $konten->donatur()->find($id)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Donatur tidak ditemukan'
             ], 404);
+        }
+
+        //mencari tahu apakan user memiliki akses ke konten
+        if( !$this->haveAccess($konten) ){
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak memiliki akses pada fitur ini'
+            ], 403);
         }
 
         if($request->has('is_diterima')) {
@@ -117,13 +151,19 @@ class DonaturController extends Controller
 
     public function destroy(Konten $konten, $id)
     {
-        $donatur = $konten->donatur()->find($id);
-
-        if (!$donatur) {
+        if (!$donatur = $konten->donatur()->find($id)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Donatur tidak ditemukan'
             ], 404);
+        }
+
+        //mencari tahu apakan user memiliki akses ke konten
+        if( !$this->haveAccess($konten) ){
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak memiliki akses pada fitur ini'
+            ], 403);
         }
     
         if ($donatur->delete()) {
@@ -134,7 +174,7 @@ class DonaturController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan penghapusan konten'
+                'message' => 'Terjadi kesalahan validasi donatur'
             ], 500);
         }
     }
