@@ -21,6 +21,8 @@ class User extends Authenticatable implements JWTSubject
         'nomorktp','fotoktp', 'is_verif',
     ];
 
+    public $timestamps = false;
+
     /**
      * The attributes that should be hidden for arrays.
      *

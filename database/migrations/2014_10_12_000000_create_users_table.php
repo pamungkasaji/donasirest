@@ -29,7 +29,8 @@ class CreateUsersTable extends Migration
             $table->boolean('is_verif')->default(0);
             //$table->dateTime('created_at');
 
-            $table->timestamps();
+            $table->timestamp('tanggal')->useCurrent();
+            //$table->timestamps();
 
             //$table->date('ttl')->nullable();
 

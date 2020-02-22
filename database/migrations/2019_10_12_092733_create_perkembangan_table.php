@@ -23,7 +23,9 @@ class CreatePerkembanganTable extends Migration
             $table->foreign('id_konten')->references('id')->on('konten')->onDelete('cascade');
             //$table->string('uangterpakai');
             //$table->date('tanggal');
-            $table->timestamps();
+            
+            $table->timestamp('tanggal')->useCurrent();
+            //$table->timestamps();
         });
     }
 

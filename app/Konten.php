@@ -14,6 +14,8 @@ class Konten extends Model
 
     protected $table = 'konten';
 
+    public $timestamps = false;
+
     public function user(){
         //belongsTo(related, foreign key, owner key)
         return $this->belongsTo(User::class , 'id_user' , 'id');
