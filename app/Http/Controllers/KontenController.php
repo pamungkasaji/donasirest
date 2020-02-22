@@ -72,7 +72,7 @@ class KontenController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Tunggu verifikasi kami',
-                'data' => $konten
+                'konten' => $konten
             ], 201);
         } else {
             return response()->json([
@@ -98,7 +98,7 @@ class KontenController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Detail konten penggalangan dana',
-            'data' => $konten
+            'konten' => $konten
         ],200);
     }
 
@@ -120,7 +120,7 @@ class KontenController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Update berhasil',
-                'data' => $konten
+                'konten' => $konten
             ], 200);
         } else {
             return response()->json([

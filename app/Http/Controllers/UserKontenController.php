@@ -46,7 +46,7 @@ class UserKontenController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Detail konten penggalangan dana',
-            'data' => $konten
+            'konten' => $konten
         ],200);
     }
 }

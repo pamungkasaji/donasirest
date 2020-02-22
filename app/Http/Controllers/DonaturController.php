@@ -113,7 +113,7 @@ class DonaturController extends Controller
         return response()->json([
             'message' => 'Informasi donatur',
             'success' => true,
-            'data' => $donatur
+            'donatur' => $donatur
         ],200);
     }
 
@@ -139,7 +139,6 @@ class DonaturController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Validasi donatur berhasil',
-                'data' => $donatur
             ], 200);
         } else {
             return response()->json([
