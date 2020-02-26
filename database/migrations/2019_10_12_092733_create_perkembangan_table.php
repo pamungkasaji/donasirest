@@ -24,7 +24,7 @@ class CreatePerkembanganTable extends Migration
             //$table->string('uangterpakai');
             //$table->date('tanggal');
             
-            $table->timestamp('tanggal')->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
             //$table->timestamps();
         });
     }

@@ -28,7 +28,7 @@ class CreateKontenTable extends Migration
             $table->boolean('is_verif')->default(0);
             //$table->date('created_at');
 
-            $table->timestamp('tanggal')->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
             //$table->timestamps();
 
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');

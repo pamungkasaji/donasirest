@@ -88,6 +88,7 @@ class AuthApiController extends Controller
  
         return response()->json([
             'success' => true,
+			'message' => 'Login berhasil',
             'user' => $usernamelogin,
             'token' => $jwt_token,
         ]);

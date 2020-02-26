@@ -39,5 +39,5 @@ use Illuminate\Http\Request;
   Route::get('user/me/konten', 'UserKontenController@index');
   Route::get('user/me/konten/{id}', 'UserKontenController@show');
 
-  Route::get('user/{user}/konten/{konten}/donatur', 'UserDonaturController@index');//
-  Route::get('user/{user}/konten/{konten}/donatur/{$id}', 'UserDonaturController@show');//
+  Route::get('user/me/donatur', 'UserDonaturController@index');
+  Route::get('user/me/donatur/{$id}', 'UserDonaturController@show');//belum bisa, belum tentu digunakan

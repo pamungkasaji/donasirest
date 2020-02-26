@@ -24,7 +24,7 @@ class CreateDonaturTable extends Migration
             //$table->dateTime('created_at');
             $table->foreign('id_konten')->references('id')->on('konten')->onDelete('cascade');
 
-            $table->timestamp('tanggal')->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
             //$table->timestamps();
         });
     }
