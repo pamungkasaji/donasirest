@@ -54,14 +54,12 @@ class KontenController extends Controller
 
         $konten = new Konten();
 
-        //$judul_slug = str_slug($request->judul,"-");
-        $file_name = str_slug($request->judul).'_konten_'.$request->id_user.'.jpg';
-        $file_path = '../storage/images/konten';
+        //upload dan atur nama file
+        $file_name = uniqid().str_slug($request->judul).'.jpg';
+        $file_path = public_path().'/images/konten';
         $path = $request->file('gambar')->move($file_path, $file_name);
-        $urlgambar = url('/storage/images/konten/'.$file_name);
-        $konten->gambar = $urlgambar;
 
-        //$konten->id_user = $request->id_user;
+        $konten->gambar = $file_name;
         $konten->judul = $request->judul;
         $konten->deskripsi = $request->deskripsi;
         $konten->target = $request->target;
@@ -143,8 +141,12 @@ class KontenController extends Controller
                 'message' => 'Konten penggalangan dana tidak ditemukan'
             ], 404);
         }
+
+        //cari path file
+        $file_path = public_path().'/images/konten/'.$konten->gambar;
     
-        if ($konten->delete()) {
+        //hapus di record DB dan file gambar
+        if ($konten->delete() && unlink($file_path)) {
             return response()->json([
                 'success' => true,
                 'message' => 'Konten penggalangan dana berhasil dihapus'

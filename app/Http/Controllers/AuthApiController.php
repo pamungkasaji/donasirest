@@ -38,17 +38,17 @@ class AuthApiController extends Controller
         }
 
         $user = new User();
-        
-        $file_name = str_slug($request->username).'_ktp.jpg';
-        $file_path = '../storage/images/ktp';
-        $path = $request->file('fotoktp')->move($file_path, $file_name);
-        $urlgambar = url('/storage/images/ktp/'.$file_name);
 
+        //upload dan atur nama file
+        $file_name = uniqid().str_slug($username).'.jpg';
+        $file_path = public_path().'/images/ktp';
+        $path = $request->file('fotoktp')->move($file_path, $file_name);
+
+        $user->fotoktp = $file_name;
         $user->namalengkap = $request->namalengkap;
         $user->alamat = $request->alamat;
         $user->nomorktp = $request->nomorktp;
         $user->nohp = $request->nohp;
-        $user->fotoktp = $urlgambar;
         $user->username = $request->username;
         $user->password = bcrypt($request->password);
 

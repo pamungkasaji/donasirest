@@ -62,14 +62,14 @@ class PerkembanganController extends Controller
             ], 403);
         }
 
-        $file_name = str_slug($request->judul).'_perkembangan.jpg';
-        $file_path = '../storage/images/perkembangan';
-        $path = $request->file('gambar')->move($file_path, $file_name);
-        $urlgambar = url('/storage/images/perkembangan/'.$file_name);
-
         $perkembangan = new Perkembangan();
 
-        $perkembangan->gambar = $urlgambar;
+        //upload dan atur nama file
+        $file_name = uniqid().str_slug($request->judul).'.jpg';
+        $file_path = public_path().'/images/perkembangan';
+        $path = $request->file('gambar')->move($file_path, $file_name);
+
+        $perkembangan->gambar = $file_name;
         $perkembangan->judul = $request->judul;
         $perkembangan->deskripsi = $request->deskripsi;
 
@@ -107,7 +107,11 @@ class PerkembanganController extends Controller
             ], 403);
         }
 
-        if ($perkembangan->delete()) {
+        //cari path file
+        $file_path = public_path().'/images/konten/'.$perkembangan->gambar;
+
+        //hapus di record DB dan file gambar
+        if ($perkembangan->delete() && unlink($file_path)) {
             return response()->json([
                 'success' => true,
                 'message' => 'Perkembangan berhasil dihapus'

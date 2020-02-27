@@ -8,6 +8,7 @@ use App\Http\Resources\DonaturResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
+use File;
 
 class DonaturController extends Controller
 {
@@ -26,14 +27,6 @@ class DonaturController extends Controller
             return true;
         }
     }
-
-        // //mencari tahu apakan user memiliki akses ke konten
-        // if (!$user->konten()->where('konten.id_user', $konten->id_user)->first()) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'Anda tidak memiliki akses pada fitur ini'
-        //     ], 403);
-        // };
 
     public function index(Konten $konten) 
     {    
@@ -72,17 +65,15 @@ class DonaturController extends Controller
 
         $donatur = new Donatur();
 
-        $file_name = str_slug($request->nama).'_donatur.jpg';
-        $file_path = '../storage/images/donatur';
+        //upload dan atur nama file
+        $file_name = uniqid().str_slug($request->nama).'.jpg';
+        $file_path = public_path().'/images/donatur';
         $path = $request->file('bukti')->move($file_path, $file_name);
-        $urlgambar = url('/storage/images/donatur/'.$file_name);
 
+        $donatur->bukti = $file_name;
         $donatur->nama = $request->nama;
         $donatur->is_anonim = $request->is_anonim;
         $donatur->jumlah = $request->jumlah;
-        $donatur->bukti = $request->bukti;
-
-        $donatur->bukti = $urlgambar;
 
         if ($konten->donatur()->save($donatur)) {
             $response = [
@@ -109,6 +100,8 @@ class DonaturController extends Controller
                 'message' => 'Donatur tidak ditemukan'
             ], 400);
         }
+
+        var_dump($donatur->bukti);
 
         return response()->json([
             'message' => 'Informasi donatur',
@@ -165,11 +158,16 @@ class DonaturController extends Controller
             ], 403);
         }
     
-        if ($donatur->delete()) {
+        //cari path file
+        $file_path = public_path().'/images/donatur/'.$donatur->bukti;
+
+        //hapus di record DB dan file gambar
+        if ($donatur->delete() && unlink($file_path)) {
             return response()->json([
                 'success' => true,
                 'message' => 'Validasi donatur tidak diterima'
             ], 200);
+
         } else {
             return response()->json([
                 'success' => false,
