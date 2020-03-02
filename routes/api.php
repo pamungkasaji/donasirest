@@ -26,8 +26,10 @@ use Illuminate\Http\Request;
   Route::put('konten/{id}', 'KontenController@update');//belum tentu dipakai, hanya admin
   Route::delete('konten/{id}', 'KontenController@destroy');//belum tentu dipakai, hanya admin
 
+  Route::get('konten/judul/{judul}', 'KontenController@showByJudul');
+
   Route::get('konten/{konten}/donatur', 'DonaturController@index');
-  Route::get('konten/{konten}/donatur/{id}', 'DonaturController@show');//belum tentu digunakan
+  Route::get('konten/{konten}/donatur/{id}', 'DonaturController@show');//
   Route::post('konten/{konten}/donatur', 'DonaturController@store');
   Route::put('konten/{konten}/donatur/{id}', 'DonaturController@update');
   Route::delete('konten/{konten}/donatur/{id}', 'DonaturController@destroy');
@@ -40,4 +42,4 @@ use Illuminate\Http\Request;
   Route::get('user/me/konten/{id}', 'UserKontenController@show');
 
   Route::get('user/me/donatur', 'UserDonaturController@index');
-  Route::get('user/me/donatur/{$id}', 'UserDonaturController@show');//belum bisa, belum tentu digunakan
+  Route::get('user/me/konten/{konten}/donatur/{$id}', 'UserDonaturController@show');//belum bisa, belum tentu digunakan

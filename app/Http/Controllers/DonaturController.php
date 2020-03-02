@@ -92,7 +92,7 @@ class DonaturController extends Controller
 
     public function show(Konten $konten, $id)
     {
-        $donatur = $konten->donatur()->find($id);
+        $donatur = $konten->donatur()->with('konten')->find($id);
 
         if (!$donatur) {
             return response()->json([
@@ -100,8 +100,6 @@ class DonaturController extends Controller
                 'message' => 'Donatur tidak ditemukan'
             ], 400);
         }
-
-        var_dump($donatur->bukti);
 
         return response()->json([
             'message' => 'Informasi donatur',
@@ -129,6 +127,7 @@ class DonaturController extends Controller
 
         if($request->has('is_diterima')) {
             ($donatur->update(['is_diterima' => $request->is_diterima]));
+            $konten->increment('terkumpul', $donatur->jumlah);
             return response()->json([
                 'success' => true,
                 'message' => 'Validasi donatur berhasil',

@@ -158,4 +158,17 @@ class KontenController extends Controller
             ], 500);
         }
     }
+
+    public function showByJudul($judul)
+    {
+        $konten = Konten::where('judul', 'LIKE', '%'.$judul.'%')->get();
+        
+        //return $konten; 
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Daftar konten penggalangan dana',
+            'data' => $konten
+        ],200);
+    }
 }
