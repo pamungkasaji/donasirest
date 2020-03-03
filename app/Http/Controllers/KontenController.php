@@ -161,9 +161,13 @@ class KontenController extends Controller
 
     public function showByJudul($judul)
     {
-        $konten = Konten::where('judul', 'LIKE', '%'.$judul.'%')->get();
-        
+        //$konten = Konten::where('judul', 'LIKE', '%'.$judul.'%')->get();
         //return $konten; 
+
+        $konten = Konten::where([
+            ['judul', 'LIKE', '%'.$judul.'%'],
+            ['is_verif', '=', true]])
+            ->get();
 
         return response()->json([
             'success' => true,
