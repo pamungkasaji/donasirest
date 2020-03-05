@@ -31,4 +31,9 @@ class Konten extends Model
         return $this->hasMany(Donatur::class , 'id_konten' , 'id');
     }
 
+    public function perpanjangan(){
+
+        return $this->hasOne(Perpanjangan::class , 'id_konten' , 'id');
+    }
+
 }
