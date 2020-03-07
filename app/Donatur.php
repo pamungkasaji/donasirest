@@ -9,7 +9,7 @@ class Donatur extends Model
     //
 
     protected $fillable = [
-        'nama', 'is_anonim', 'jumlah', 'bukti', 'id_konten', 'is_diterima'
+        'nama', 'is_anonim', 'jumlah', 'bukti', 'nohp', 'id_konten', 'is_diterima'
     ];
 
     protected $table = 'donatur';

@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Konten;
+use App\Perpanjangan;
+use Illuminate\Support\Facades\Validator;
+use JWTAuth;
+
 class PerpanjanganController extends Controller
 {
     //
@@ -23,10 +28,19 @@ class PerpanjanganController extends Controller
         }
     }
 
+    //admin
     public function index(Konten $konten) 
     {    
         //ambil daftar permintaan perpanjangan
-        $perpanjangan = $konten->perpanjangan()->where('is_request',true)->with('konten')->get();
+        //$perpanjangan = $konten->perpanjangan()->where('is_request',true)->with('konten')->get();
+        $perpanjangan = Perpanjangan::with('konten')-where('status', '=', 'verifikasi')->get();
+
+        if (!$perpanjangan) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Penggalangan Dana tidak ditemukan'
+            ], 400);
+        }
 
         return response()->json([
             'success' => true,
@@ -89,5 +103,28 @@ class PerpanjanganController extends Controller
             'success' => true,
             'perpanjangan' => $perpanjangan
         ],200);
+    }
+
+    public function destroy(Konten $konten, $id)
+    {
+        if (!$perpanjangan = $konten->perpanjangan()->find($id)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Perpanjangan tidak ditemukan'
+            ], 404);
+        }
+
+        if ($perpanjangan->delete()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Permintaan perpanjangan tidak diterima'
+            ], 200);
+
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan'
+            ], 500);
+        }
     }
 }

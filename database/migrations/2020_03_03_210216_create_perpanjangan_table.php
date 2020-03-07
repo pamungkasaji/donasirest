@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePerpanjangansTable extends Migration
+class CreatePerpanjanganTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatePerpanjangansTable extends Migration
      */
     public function up()
     {
-        Schema::create('perpanjangans', function (Blueprint $table) {
+        Schema::create('perpanjangan', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_konten');
-            $table->boolean('is_request');
+            $table->string('status')->default('verifikasi');
             $table->integer('jumlah_hari');
             $table->string('alasan');
 

@@ -22,7 +22,7 @@ class KontenController extends Controller
 
     public function index()
     {
-        $konten = Konten::with('user')->where('is_verif',true)->get();
+        $konten = Konten::with('user')->where('status', '!=', 'verifikasi')->get();
 
         return response()->json([
             'success' => true,
@@ -82,7 +82,7 @@ class KontenController extends Controller
 
     public function show($id)
     {
-        $konten = Konten::with('user')->where('is_verif',true)->find($id);
+        $konten = Konten::with('user')->where('status', '!=', 'verifikasi')->find($id);
  
         if (!$konten) {
             return response()->json([
@@ -113,8 +113,8 @@ class KontenController extends Controller
             ], 404);
         }
 
-        if($request->has('is_verif')) {
-            ($konten->update(['is_verif' => $request->is_verif]));
+        if($request->has('status')) {
+            ($konten->update(['status' => $request->status]));
             return response()->json([
                 'success' => true,
                 'message' => 'Update berhasil',
@@ -166,7 +166,7 @@ class KontenController extends Controller
 
         $konten = Konten::where([
             ['judul', 'LIKE', '%'.$judul.'%'],
-            ['is_verif', '=', true]])
+            ['status', '!=', 'verifikasi']])
             ->get();
 
         return response()->json([

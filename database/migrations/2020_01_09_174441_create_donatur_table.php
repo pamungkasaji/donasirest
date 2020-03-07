@@ -21,6 +21,7 @@ class CreateDonaturTable extends Migration
             $table->boolean('is_diterima')->default(0);
             $table->integer('jumlah');
             $table->string('bukti');
+            $table->string('nohp');
             //$table->dateTime('created_at');
             $table->foreign('id_konten')->references('id')->on('konten')->onDelete('cascade');
 

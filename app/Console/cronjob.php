@@ -14,9 +14,16 @@ if ($conn->connect_error) {
 $sql = "UPDATE konten SET lama_donasi=lama_donasi - 1 WHERE lama_donasi>0";
 
 if ($conn->query($sql) === TRUE) {
-    echo "Record updated successfully";
+    echo "Update lama donasi";
 } else {
-    echo "Error updating record: " . $conn->error;
+    echo "Gagal ubah lama donasi: " . $conn->error;
+}
+
+$sql2 = "UPDATE konten SET status='selesai' WHERE lama_donasi=0";
+if ($conn->query($sql2) === TRUE) {
+    echo "Update donasi selesai";
+} else {
+    echo "Gagal update donasi selesai: " . $conn->error;
 }
 
 $conn->close();

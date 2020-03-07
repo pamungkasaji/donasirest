@@ -21,7 +21,7 @@ class UserKontenController extends Controller
     {
         $user = JWTAuth::parseToken()->authenticate();
 
-        $konten = $user->konten()->get();
+        $konten = $user->konten()->with('user')->get();
 
         return response()->json([
             'success' => true,
@@ -34,7 +34,7 @@ class UserKontenController extends Controller
     {
         $user = JWTAuth::parseToken()->authenticate();
 
-        $konten = $user->konten()->find($id);
+        $konten = $user->konten()->with('user','perpanjangan')->find($id);
  
         if (!$konten) {
             return response()->json([

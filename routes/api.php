@@ -38,6 +38,12 @@ use Illuminate\Http\Request;
   Route::post('konten/{konten}/perkembangan', 'PerkembanganController@store');
   Route::delete('konten/{konten}/perkembangan/{id}', 'PerkembanganController@destroy');//belum tentu dipakai
 
+  Route::get('perpanjangan', 'PerpanjanganController@index');//admin
+  Route::get('perpanjangan/{id}', 'PerpanjanganController@show');//admin
+  Route::post('konten/{konten}/perpanjangan', 'PerpanjanganController@store');
+  Route::put('konten/{konten}/donatur/{id}', 'DonaturController@update');//admin
+  Route::delete('konten/{konten}/perpanjangan/{id}', 'PerpanjanganController@destroy');//admin
+
   Route::get('user/me/konten', 'UserKontenController@index');
   Route::get('user/me/konten/{id}', 'UserKontenController@show');
 

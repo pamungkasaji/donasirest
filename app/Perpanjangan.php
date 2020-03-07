@@ -8,7 +8,7 @@ class Perpanjangan extends Model
 {
     //
     protected $fillable = [
-        'is_request','jumlah_hari', 'alasan','id_konten', 
+        'status','jumlah_hari', 'alasan','id_konten', 
     ];
 
     protected $table = 'perpanjangan';

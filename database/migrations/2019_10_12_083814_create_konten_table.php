@@ -25,12 +25,10 @@ class CreateKontenTable extends Migration
             $table->integer('terkumpul')->default(0);
             $table->integer('lama_donasi');
             $table->string('nomorrekening');
-            $table->boolean('is_verif')->default(0);
+            $table->string('status')->default('verifikasi');
             //$table->date('created_at');
-
             $table->timestamp('created_at')->useCurrent();
             //$table->timestamps();
-
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
         });
     }
