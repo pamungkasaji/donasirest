@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Konten;
+use App\User;
 use Illuminate\Http\Request;
 
 class AdminKontenController extends Controller
@@ -30,8 +31,9 @@ class AdminKontenController extends Controller
      */
     public function show(Konten $konten)
     {
-        //
-
+        $konten = Konten::with('user')->find($konten->id);
+  
+        return view('admin.konten.show', compact('konten'));
     }
 
     /**
