@@ -24,7 +24,7 @@
 
                     <p> {{ $konten->judul }} </p>
                     <p> {{ $konten->user->namalengkap }} </p>
-                    <a href=" {{ route('admin.konten.show', $konten->id) }}"><button type="button" class="btn btn-primary">Detail</button>
+
                 </div>
             </div>
         </div>

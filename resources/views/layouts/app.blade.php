@@ -64,6 +64,12 @@
                                     <a class="dropdown-item" href="{{ route('admin.konten.index') }}">
                                         Konten Management
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('admin.user.index') }}">
+                                        User Management
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('admin.perpanjangan.index') }}">
+                                        Perpanjangan Management
+                                    </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
