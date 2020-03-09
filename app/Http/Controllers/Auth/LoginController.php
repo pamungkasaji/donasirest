@@ -22,7 +22,9 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        logout as performLogout;
+    }
 
     /**
      * Where to redirect users after login.
@@ -47,12 +49,21 @@ class LoginController extends Controller
         //$this->middleware('guest:admin')->except('logout');
     }
 
+<<<<<<< HEAD
     // public function adminLogin(Request $request)
     // {
     //     $this->validate($request, [
     //         'username'   => 'required',
     //         'password' => 'required|min:6'
     //     ]);
+=======
+    public function login(Request $request)
+    {
+        $this->validate($request, [
+            'username'   => 'required',
+            'password' => 'required|min:6'
+        ]);
+>>>>>>> a197c675c5d31a021f9d5c8009a47934c8fdb728
 
     //     if (Auth::guard('admin')->attempt(['username' => $request->username, 'password' => $request->password], $request->get('remember'))) {
 
@@ -60,5 +71,11 @@ class LoginController extends Controller
     //     }
     //     return back()->withInput($request->only('username', 'remember'));
     // }
+
+    public function logout(Request $request)
+    {
+        $this->performLogout($request);
+        return redirect()->route('login');
+    }   
 
 }
