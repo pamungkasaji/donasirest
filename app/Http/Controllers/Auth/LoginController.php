@@ -22,7 +22,9 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        logout as performLogout;
+    }
 
     /**
      * Where to redirect users after login.
@@ -44,10 +46,10 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->middleware('guest:admin')->except('logout');
+        //$this->middleware('guest:admin')->except('logout');
     }
 
-    public function adminLogin(Request $request)
+    public function login(Request $request)
     {
         $this->validate($request, [
             'username'   => 'required',
@@ -60,5 +62,11 @@ class LoginController extends Controller
         }
         return back()->withInput($request->only('username', 'remember'));
     }
+
+    public function logout(Request $request)
+    {
+        $this->performLogout($request);
+        return redirect()->route('login');
+    }   
 
 }
