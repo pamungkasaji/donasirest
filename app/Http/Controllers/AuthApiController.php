@@ -67,12 +67,6 @@ class AuthApiController extends Controller
  
     public function login(Request $request)
     {
-        // if(!empty($request->input('new_password'))) {
-        //     $new_password = bcrypt($request->input('new_password'));
-        //     $user->password = $new_password;
-        //     $user->save();
-        // }
-
         $input = $request->only('username', 'password');
         $jwt_token = null;
  
@@ -83,15 +77,19 @@ class AuthApiController extends Controller
             ], 401);
         }
 
-        $username = $request->username;
-        $usernamelogin = User::where('username', $username)->first();
- 
-        return response()->json([
-            'success' => true,
-			'message' => 'Login berhasil',
-            'user' => $usernamelogin,
-            'token' => $jwt_token,
-        ]);
+        if ($user = User::where( [['username', $request->username], ['is_verif', 1]] )->first()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Login berhasil',
+                'user' => $user,
+                'token' => $jwt_token,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Silahkan tunggu verifikasi admin',
+            ], 401);
+        }
     }
  
     public function logout(Request $request)

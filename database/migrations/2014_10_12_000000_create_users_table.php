@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('username')->unique();
             $table->string('password');
-            $table->string('usertype')->default('user'); //ada admin
+            //$table->string('usertype')->default('user');
 
             //$table->string('api_token')->nullable();
 
@@ -30,18 +30,7 @@ class CreateUsersTable extends Migration
             //$table->dateTime('created_at');
 
             $table->timestamp('created_at')->useCurrent();
-            //$table->timestamps();
-
-            //$table->date('ttl')->nullable();
-
-            // $table->string('email')->unique();
-            // $table->timestamp('email_verified_at')->nullable();
-            // $table->boolean('confirmed')->nullable();
-
-            //$table->string('email')->unique();
-            //$table->timestamp('email_verified_at')->nullable();
-            
-            
+            //$table->timestamps(); 
         });
     }
 
