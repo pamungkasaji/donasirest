@@ -25,4 +25,11 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
     Route::resource('/konten', 'AdminKontenController', ['except' => ['create', 'store']]);
     Route::resource('/user', 'AdminUserController', ['except' => ['create', 'store']]);
     Route::resource('/perpanjangan', 'AdminPerpanjanganController', ['except' => ['create', 'store']]);
+
+    Route::get('/verifikasi', 'AdminKontenController@verifikasi');
+    Route::get('/verifikasi/{id}', 'AdminKontenController@showVerifikasi');
+    Route::put('/verifikasi/{id}', 'AdminKontenController@approve');
+    Route::put('/verifikasi/{id}', 'AdminKontenController@disapprove');
+
+
 });

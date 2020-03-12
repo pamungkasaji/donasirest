@@ -7,6 +7,8 @@ use App\Konten;
 use App\User;
 use Illuminate\Http\Request;
 
+use Illuminate\Database\Eloquent\Builder;
+
 class AdminKontenController extends Controller
 {
     /**
@@ -21,6 +23,20 @@ class AdminKontenController extends Controller
 
         //return view('admin.konten.index')->with('kontens', $kontens);
         return view('admin.konten.index', compact('konten'));
+    }
+
+    public function verifikasi()
+    {
+        //
+        $konten = Konten::where('status','verifikasi')->get();
+
+        //$perpanjangan = Konten::has('perpanjangan')->with('perpanjangan')->get()->dump();
+
+        $extend = Konten::whereHas('perpanjangan', function (Builder $query) {
+            $query->where('status', 'verifikasi');
+        })->with('perpanjangan')->get();
+
+        return view('admin.konten.verifikasi', compact('konten','extend'));
     }
 
     /**

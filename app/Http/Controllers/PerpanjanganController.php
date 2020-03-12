@@ -70,6 +70,13 @@ class PerpanjanganController extends Controller
             ], 403);
         }
 
+        if ($konten->perpanjangan()->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Perpanjangan sudah diajukan'
+            ]);
+        }
+
         $perpanjangan = new Perpanjangan($request->all());
 
         if ( $konten->perpanjangan()->save($perpanjangan) ) {
