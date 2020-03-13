@@ -67,7 +67,7 @@ class PerkembanganController extends Controller
         //upload dan atur nama file
         $file_name = uniqid().str_slug($request->judul).'.jpg';
         $file_path = public_path().'/images/perkembangan';
-        $path = $request->file('gambar')->move($file_path, $file_name);
+        $request->file('gambar')->move($file_path, $file_name);
 
         $perkembangan->gambar = $file_name;
         $perkembangan->judul = $request->judul;

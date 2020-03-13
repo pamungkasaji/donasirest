@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">Konten Management</div>
+                <div class="card-header">Penggalang Dana</div>
 
                 <div class="card-body">
 
@@ -13,23 +13,21 @@
                         <thead>
                             <tr>
                                 <th scope="col">No</th>
-                                <th scope="col">Judul</th>
-                                <th scope="col">Target</th>
-                                <th scope="col">Sisa Hari</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Nama Lengkap</th>
+                                <th scope="col">Nomor KTP</th>
+                                <th scope="col">No HP</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($konten as $konten)
+                            @foreach($user as $user)
                             <tr>
-                                <th>{{ $konten->id }}</th>
-                                <td>{{ $konten->judul }}</td>
-                                <td>{{ $konten->target }}</td>
-                                <td>{{ $konten->lama_donasi }}</td>
-                                <td>{{ $konten->status }}</td>
+                                <th>{{ $user->id }}</th>
+                                <td>{{ $user->namalengkap }}</td>
+                                <td>{{ $user->nomorktp }}</td>
+                                <td>{{ $user->nohp }}</td>
                                 <td>
-                                    <a href=" {{ route('admin.konten.show', $konten->id) }}"><button type="button" class="btn btn-primary">Detail</button>
+                                    <a href=" {{ route('admin.user.show', $user->id) }}"><button type="button" class="btn btn-primary">Detail</button>
                                 </td>
                             </tr>
                             @endforeach

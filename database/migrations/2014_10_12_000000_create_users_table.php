@@ -18,9 +18,6 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('password');
             //$table->string('usertype')->default('user');
-
-            //$table->string('api_token')->nullable();
-
             $table->string('namalengkap');
             $table->string('alamat');
             $table->string('nomorktp');

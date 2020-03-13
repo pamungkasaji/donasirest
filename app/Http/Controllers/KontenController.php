@@ -57,7 +57,7 @@ class KontenController extends Controller
         //upload dan atur nama file
         $file_name = uniqid().str_slug($request->judul).'.jpg';
         $file_path = public_path().'/images/konten';
-        $path = $request->file('gambar')->move($file_path, $file_name);
+        $request->file('gambar')->move($file_path, $file_name);
 
         $konten->gambar = $file_name;
         $konten->judul = $request->judul;

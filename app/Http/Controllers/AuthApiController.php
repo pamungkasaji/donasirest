@@ -42,7 +42,7 @@ class AuthApiController extends Controller
         //upload dan atur nama file
         $file_name = uniqid().str_slug($request->namalengkap).'.jpg';
         $file_path = public_path().'/images/ktp';
-        $path = $request->file('fotoktp')->move($file_path, $file_name);
+        $request->file('fotoktp')->move($file_path, $file_name);
 
         $user->fotoktp = $file_name;
         $user->namalengkap = $request->namalengkap;

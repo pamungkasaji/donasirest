@@ -29,7 +29,7 @@
                                 <td>{{ $konten->lama_donasi }}</td>
                                 <td>{{ $konten->status }}</td>
                                 <td>
-                                    <a href=" {{ route('admin.konten.show', $konten->id) }}"><button type="button" class="btn btn-primary">Detail</button>
+                                    <a href=" {{ route('admin.verifikasi.konten.show', $konten->id) }}"><button type="button" class="btn btn-primary">Detail</button>
                                 </td>
                             </tr>
                             @endforeach
@@ -50,21 +50,19 @@
                                 <th scope="col">No</th>
                                 <th scope="col">Judul</th>
                                 <th scope="col">Jumlah Hari</th>
-                                <th scope="col">Sisa Hari</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach($extend as $extend)
+                        @foreach($perpanjangan as $perpanjangan)
                             <tr>
-                                <th>{{ $extend->id }}</th>
-                                <td>{{ $extend->judul }}</td>
-                                <td>{{ $extend->perpanjangan->jumlah_hari }}</td>
-                                <td>{{ $extend->lama_donasi }}</td>
-                                <td>{{ $extend->status }}</td>
+                                <th>{{ $perpanjangan->id }}</th>
+                                <td>{{ $perpanjangan->judul }}</td>
+                                <td>{{ $perpanjangan->perpanjangan->jumlah_hari }}</td>
+                                <td>{{ $perpanjangan->status }}</td>
                                 <td>
-                                    <a href=" {{ route('admin.konten.show', $konten->id) }}"><button type="button" class="btn btn-primary">Detail</button>
+                                    <a href=" {{ route('admin.verifikasi.perpanjangan.show', $perpanjangan->id) }}"><button type="button" class="btn btn-primary">Detail</button>
                                 </td>
                             </tr>
                             @endforeach

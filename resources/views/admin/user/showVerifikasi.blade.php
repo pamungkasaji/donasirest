@@ -22,8 +22,8 @@
 
                 */ ?>
 
-                    <p> {{ $konten->judul }} </p>
-                    <p> {{ $konten->user->namalengkap }} </p>
+                    <p> {{ $user->username }} </p>
+                    <p> {{ $user->namalengkap }} </p>
 
                 </div>
             </div>

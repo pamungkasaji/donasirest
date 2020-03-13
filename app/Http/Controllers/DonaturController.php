@@ -68,17 +68,19 @@ class DonaturController extends Controller
         //upload dan atur nama file
         $file_name = uniqid().str_slug($request->nama).'.jpg';
         $file_path = public_path().'/images/donatur';
-        $path = $request->file('bukti')->move($file_path, $file_name);
+        $request->file('bukti')->move($file_path, $file_name);
 
         $donatur->bukti = $file_name;
         $donatur->nama = $request->nama;
         $donatur->is_anonim = $request->is_anonim;
         $donatur->jumlah = $request->jumlah;
+        $donatur->nohp = $request->nohp;
 
         if ($konten->donatur()->save($donatur)) {
             $response = [
                 'success' => true,
                 'message' => "Tunggu verifikasi penggalang dana",
+                'path' => $file_path,
                 'donatur' => $donatur
             ];
             return response()->json($response,201);
