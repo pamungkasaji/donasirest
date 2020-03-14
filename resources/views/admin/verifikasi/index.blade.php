@@ -9,6 +9,20 @@
 
                 <div class="card-body">
 
+                    @if(session()->get('success'))
+                    <div class="alert alert-success">
+                        <strong>{{ session()->get('success') }}</strong>
+                    </div><br />
+                    @elseif(session()->get('warning'))
+                    <div class="alert alert-warning">
+                        <strong>{{ session()->get('warning') }}</strong>
+                    </div><br />
+                    @elseif(session()->get('danger'))
+                    <div class="alert alert-danger">
+                        <strong>{{ session()->get('danger') }}</strong>
+                    </div><br />
+                    @endif
+
                     <table class="table">
                         <thead>
                             <tr>
@@ -21,7 +35,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach($konten as $konten)
+                            @foreach($konten as $konten)
                             <tr>
                                 <th>{{ $konten->id }}</th>
                                 <td>{{ $konten->judul }}</td>
@@ -55,21 +69,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach($perpanjangan as $perpanjangan)
+                            @foreach($kontenPerpanjangan as $kontenPerpanjangan)
                             <tr>
-                                <th>{{ $perpanjangan->id }}</th>
-                                <td>{{ $perpanjangan->judul }}</td>
-                                <td>{{ $perpanjangan->perpanjangan->jumlah_hari }}</td>
-                                <td>{{ $perpanjangan->status }}</td>
+                                <th>{{ $kontenPerpanjangan->id }}</th>
+                                <td>{{ $kontenPerpanjangan->judul }}</td>
+                                <td>{{ $kontenPerpanjangan->perpanjangan->jumlah_hari }}</td>
+                                <td>{{ $kontenPerpanjangan->status }}</td>
                                 <td>
-                                    <a href=" {{ route('admin.verifikasi.perpanjangan.show', $perpanjangan->id) }}"><button type="button" class="btn btn-primary">Detail</button>
+                                    <a href=" {{ route('admin.verifikasi.perpanjangan.show', $kontenPerpanjangan->id) }}"><button type="button" class="btn btn-primary">Detail</button>
                                 </td>
                             </tr>
                             @endforeach
-
                         </tbody>
                     </table>
-                    
                 </div>
             </div>
         </div>

@@ -5,10 +5,23 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">Penggalang Dana</div>
+                <div class="card-header">Verifikasi Penggalang Dana</div>
 
                 <div class="card-body">
 
+                    @if(session()->get('success'))
+                    <div class="alert alert-success">
+                        <strong>{{ session()->get('success') }}</strong>
+                    </div><br />
+                    @elseif(session()->get('warning'))
+                    <div class="alert alert-warning">
+                        <strong>{{ session()->get('warning') }}</strong>
+                    </div><br />
+                    @elseif(session()->get('danger'))
+                    <div class="alert alert-danger">
+                        <strong>{{ session()->get('danger') }}</strong>
+                    </div><br />
+                    @endif
                     <table class="table">
                         <thead>
                             <tr>
@@ -27,7 +40,7 @@
                                 <td>{{ $user->nomorktp }}</td>
                                 <td>{{ $user->nohp }}</td>
                                 <td>
-                                    <a href=" {{ route('admin.user.show', $user->id) }}"><button type="button" class="btn btn-primary">Detail</button>
+                                    <a href=" {{ route('admin.verifikasi.user.show', $user->id) }}"><button type="button" class="btn btn-primary">Detail</button>
                                 </td>
                             </tr>
                             @endforeach

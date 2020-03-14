@@ -24,6 +24,7 @@
 
                     <p> {{ $user->username }} </p>
                     <p> {{ $user->namalengkap }} </p>
+                    <img src="{{url('/images/ktp/')}}/{{$user->fotoktp}}" alt="Foto KTP penggalang dana">
 
                 </div>
             </div>
