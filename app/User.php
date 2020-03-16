@@ -52,15 +52,6 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
     public function konten(){
         //hasMany(related, foreign key, local key)
         return $this->hasMany(Konten::class , 'id_user' , 'id');

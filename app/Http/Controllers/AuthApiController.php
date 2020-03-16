@@ -70,7 +70,7 @@ class AuthApiController extends Controller
         $input = $request->only('username', 'password');
         $jwt_token = null;
  
-        if (!$jwt_token = JWTAuth::attempt($input)) {
+        if (!$jwt_token = auth('api')->attempt($input)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Username atau password salah',
@@ -94,16 +94,8 @@ class AuthApiController extends Controller
  
     public function logout(Request $request)
     {
-        if (!$request->token) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Token logout tidak ditemukan',
-            ], 401);
-        }
- 
         try {
-            JWTAuth::parseToken()->invalidate( $request->token );
-            //JWTAuth::invalidate($request->token);
+            auth('api')->invalidate();
  
             return response()->json([
                 'success' => true,
@@ -119,15 +111,8 @@ class AuthApiController extends Controller
  
     public function getAuthUser(Request $request)
     {
-        if (!$request->token) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Token logout tidak ditemukan',
-            ], 401);
-        }
- 
         try {
-            $user = JWTAuth::parseToken()->authenticate($request->token);
+            $user = auth('api')->authenticate();
             return response()->json([
                 'success' => true,
                 'message' => 'Data user',

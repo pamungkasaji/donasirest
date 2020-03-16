@@ -21,12 +21,12 @@ Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
+Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('/konten', 'AdminKontenController', ['except' => ['create', 'store']]);
     Route::resource('/user', 'AdminUserController', ['except' => ['create', 'store']]);
 
     Route::get('/verifikasi', 'VerifikasiController@index')->name('verifikasi.index');
-    
+
     Route::get('/verifikasi/konten/{id}', 'VerifikasiController@showKonten')->name('verifikasi.konten.show');
     Route::put('/verifikasi/konten/approve/{id}', 'VerifikasiController@approveKonten')->name('verifikasi.konten.approve');
     Route::put('/verifikasi/konten/disapprove/{id}', 'VerifikasiController@disapproveKonten')->name('verifikasi.konten.disapprove');
@@ -39,5 +39,4 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
     Route::get('/verifikasi/user/{id}', 'VerifikasiUserController@show')->name('verifikasi.user.show');
     Route::put('/verifikasi/user/approve/{id}', 'VerifikasiUserController@approve')->name('verifikasi.user.approve');
     Route::delete('/verifikasi/user/disapprove/{id}', 'VerifikasiUserController@disapprove')->name('verifikasi.user.disapprove');
-
 });

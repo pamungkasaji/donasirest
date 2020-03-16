@@ -17,7 +17,7 @@ class KontenController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth.jwt')->only('store, update, delete');
+        $this->middleware('auth.jwt')->only('store, update, delete, indexUser, showUser');
     }
 
     public function index()
@@ -50,7 +50,7 @@ class KontenController extends Controller
             ], 422);
         }
 
-        $user = JWTAuth::parseToken()->authenticate();
+        $user = auth('api')->authenticate();
 
         $konten = new Konten();
 
@@ -102,7 +102,7 @@ class KontenController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = JWTAuth::parseToken()->authenticate();
+        $user = auth('api')->authenticate();
 
         $konten = $user->konten()->find($id);
  
@@ -130,7 +130,7 @@ class KontenController extends Controller
 
     public function destroy($id)
     {
-        $user = JWTAuth::parseToken()->authenticate();
+        $user = auth('api')->authenticate();
 
         //$konten = Konten::find($id);
         $konten = $user->konten()->find($id);
@@ -173,6 +173,39 @@ class KontenController extends Controller
             'success' => true,
             'message' => 'Daftar konten penggalangan dana',
             'data' => $konten
+        ],200);
+    }
+
+    public function indexUser()
+    {
+        $user = auth('api')->authenticate();
+
+        $konten = $user->konten()->with('user')->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Daftar konten penggalangan dana',
+            'data' => $konten
+        ],200);
+    }
+
+    public function showUser($id)
+    {
+        $user = auth('api')->authenticate();
+
+        $konten = $user->konten()->with('user','perpanjangan')->find($id);
+ 
+        if (!$konten) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Konten penggalangan dana tidak ditemukan'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail konten penggalangan dana',
+            'konten' => $konten
         ],200);
     }
 }

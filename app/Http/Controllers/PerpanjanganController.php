@@ -14,18 +14,7 @@ class PerpanjanganController extends Controller
     //
     public function __construct()
     {
-        $this->middleware('auth.jwt')->only('store');
-    }
-
-    //mencari tahu apakan user memiliki akses ke konten
-    public function haveAccess(Konten $konten) {
-        $user = JWTAuth::parseToken()->authenticate();
-
-        if (!$user->konten()->where('konten.id_user', $konten->id_user)->first()) {
-            return false;
-        } else {
-            return true;
-        }
+        $this->middleware('auth.jwt')->only('store,destroy');
     }
 
     //admin
@@ -63,7 +52,9 @@ class PerpanjanganController extends Controller
             ], 422);
         }
 
-        if( !$this->haveAccess($konten) ){
+        $user = auth('api')->authenticate();
+
+        if( !$user->konten()->where('konten.id_user', $konten->id_user)->first() ){
             return response()->json([
                 'success' => false,
                 'message' => 'Anda tidak memiliki akses pada fitur ini'

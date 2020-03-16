@@ -18,17 +18,6 @@ class PerkembanganController extends Controller
         $this->middleware('auth.jwt')->only('store, delete');
     }
 
-    //mencari tahu apakan user memiliki akses ke konten
-    public function haveAccess(Konten $konten) {
-        $user = JWTAuth::parseToken()->authenticate();
-
-        if (!$user->konten()->where('konten.id_user', $konten->id_user)->first()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     public function index(Konten $konten)
     {
         $perkembangan = $konten->perkembangan()->get();
@@ -55,7 +44,9 @@ class PerkembanganController extends Controller
             ], 422);
         }
 
-        if( !$this->haveAccess($konten) ){
+        $user = auth('api')->authenticate();
+
+        if( !$user->konten()->where('konten.id_user', $konten->id_user)->first() ){
             return response()->json([
                 'success' => false,
                 'message' => 'Anda tidak memiliki akses pada fitur ini'
@@ -99,8 +90,9 @@ class PerkembanganController extends Controller
             ], 404);
         }
     
-        //mencari tahu apakan user memiliki akses ke konten
-        if( !$this->haveAccess($konten) ){
+        $user = auth('api')->authenticate();
+
+        if( !$user->konten()->where('konten.id_user', $konten->id_user)->first() ){
             return response()->json([
                 'success' => false,
                 'message' => 'Anda tidak memiliki akses pada fitur ini'

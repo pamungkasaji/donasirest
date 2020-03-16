@@ -14,12 +14,12 @@ class DonaturController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.jwt')->only('update, delete');
+        $this->middleware('auth.jwt')->only('update, delete, destroy, indexUser, showUser');
     }
 
     //mencari tahu apakan user memiliki akses ke konten
     public function haveAccess(Konten $konten) {
-        $user = JWTAuth::parseToken()->authenticate();
+        $user = auth('api')->authenticate();
 
         if (!$user->konten()->where('konten.id_user', $konten->id_user)->first()) {
             return false;
@@ -175,5 +175,44 @@ class DonaturController extends Controller
                 'message' => 'Terjadi kesalahan validasi donatur'
             ], 500);
         }
+    }
+
+    public function indexUser()
+    {
+        $user = auth('api')->authenticate();
+
+        $donatur = $user->konten()
+        ->with('donatur')
+        ->get()
+        ->pluck('donatur')
+        ->collapse();
+
+        if (!$donatur) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Daftar donatur tidak ditemukan'
+            ], 400);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Daftar donatur masuk',
+            'data' => $donatur
+        ],200);
+    }
+
+    public function showUser($id)
+    {
+        $user = auth('api')->authenticate();
+
+        //pilih satu
+        $donatur = $user->konten()->with('donatur')->find($id);
+
+        // $donatur = $user->konten()
+        // ->with('donatur')
+        // ->get()
+        // ->pluck('donatur')
+        // ->collapse();
+
+        return $donatur;
     }
 }

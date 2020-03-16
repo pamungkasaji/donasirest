@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::middleware('auth.jwt')->get('users', function () {
+  return auth('api')->user();
+});
+
   // = belum
 
   Route::post('login', 'AuthApiController@login');
@@ -44,8 +48,8 @@ use Illuminate\Http\Request;
   Route::put('konten/{konten}/donatur/{id}', 'DonaturController@update');//admin
   Route::delete('konten/{konten}/perpanjangan/{id}', 'PerpanjanganController@destroy');//admin
 
-  Route::get('user/me/konten', 'UserKontenController@index');
-  Route::get('user/me/konten/{id}', 'UserKontenController@show');
+  Route::get('user/me/konten', 'KontenController@indexUser');
+  Route::get('user/me/konten/{id}', 'KontenController@showUser');
 
-  Route::get('user/me/donatur', 'UserDonaturController@index');
-  Route::get('user/me/konten/{konten}/donatur/{$id}', 'UserDonaturController@show');//belum bisa, belum tentu digunakan
+  Route::get('user/me/donatur', 'DonaturController@indexUser');
+  Route::get('user/me/konten/{konten}/donatur/{$id}', 'DonaturController@showUser');//belum bisa, belum tentu digunakan
