@@ -3,15 +3,19 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">Verifikasi Perpanjangan Penggalangan Dana</div>
 
                 <div class="card-body">
 
-                    <p> {{ $kontenPerpanjangan->judul }} </p>
-                    <p> {{ $kontenPerpanjangan->perpanjangan->alasan }} </p>
-                    <p> {{ $kontenPerpanjangan->user->namalengkap }} </p>
+                    <p> Judul : {{ $kontenPerpanjangan->judul }} </p>
+                    <p> Alasan : {{ $kontenPerpanjangan->perpanjangan->alasan }} </p>
+                    <p> Jumlah hari : {{ $kontenPerpanjangan->perpanjangan->jumlah_hari }} </p>
+                    <p> Nama lengkap : {{ $kontenPerpanjangan->user->namalengkap }} </p>
+
+                    <img src="{{url('/images/konten/')}}/{{$kontenPerpanjangan->gambar}}" alt="Gambar konten penggalangan dana">
+                    <br>
 
                     <form action="{{ route('admin.verifikasi.perpanjangan.approve', $kontenPerpanjangan->perpanjangan->id)}}" method="post">
                         @csrf

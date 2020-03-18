@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">Verifikasi</div>
 
@@ -11,6 +11,7 @@
 
                     <p> {{ $user->username }} </p>
                     <p> {{ $user->namalengkap }} </p>
+                    <img src="{{url('/images/ktp/')}}/{{$user->fotoktp}}" alt="Foto KTP penggalang dana">
                     
                     <form action="{{ route('admin.verifikasi.user.approve', $user->id)}}" method="post">
                         @csrf
