@@ -21,7 +21,7 @@ Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
+Route::namespace('Admin')->middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('/konten', 'AdminKontenController', ['except' => ['create', 'store']]);
     Route::resource('/user', 'AdminUserController', ['except' => ['create', 'store']]);
 

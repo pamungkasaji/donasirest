@@ -11,12 +11,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 class AdminKontenController extends Controller
 {
+
     public function index()
     {
-        //
         $konten = Konten::all();
 
-        //return view('admin.konten.index')->with('kontens', $kontens);
         return view('admin.konten.index', compact('konten'));
     }
 
@@ -29,6 +28,9 @@ class AdminKontenController extends Controller
 
     public function destroy($id)
     {
-        //
+        Konten::where('id', $id)->delete();
+
+        return redirect()->route('admin.konten.index')
+                        ->with('warning','Konten penggalangan dana dihapus');
     }
 }

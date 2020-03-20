@@ -9,6 +9,20 @@
 
                 <div class="card-body">
 
+                    @if(session()->get('success'))
+                    <div class="alert alert-success">
+                        <strong>{{ session()->get('success') }}</strong>
+                    </div><br />
+                    @elseif(session()->get('warning'))
+                    <div class="alert alert-warning">
+                        <strong>{{ session()->get('warning') }}</strong>
+                    </div><br />
+                    @elseif(session()->get('danger'))
+                    <div class="alert alert-danger">
+                        <strong>{{ session()->get('danger') }}</strong>
+                    </div><br />
+                    @endif
+
                     <table class="table">
                         <thead>
                             <tr>

@@ -182,7 +182,9 @@ class DonaturController extends Controller
         $user = auth('api')->authenticate();
 
         $donatur = $user->konten()
-        ->with('donatur')
+        ->with(['donatur' => function($query){
+            $query->where('is_diterima', 0);
+            }])
         ->get()
         ->pluck('donatur')
         ->collapse();

@@ -20,7 +20,7 @@ class PerkembanganController extends Controller
 
     public function index(Konten $konten)
     {
-        $perkembangan = $konten->perkembangan()->get();
+        $perkembangan = $konten->perkembangan()->orderBy('created_at', 'desc')->get();
 
         return response()->json([
             'success' => true,
