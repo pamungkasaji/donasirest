@@ -35,8 +35,8 @@ Route::namespace('Admin')->middleware('auth')->prefix('admin')->name('admin.')->
     Route::put('/verifikasi/perpanjangan/approve/{id}', 'VerifikasiController@approvePerpanjangan')->name('verifikasi.perpanjangan.approve');
     Route::put('/verifikasi/perpanjangan/disapprove/{id}', 'VerifikasiController@disapprovePerpanjangan')->name('verifikasi.perpanjangan.disapprove');
 
-    Route::get('/verifikasi/user', 'VerifikasiUserController@index')->name('verifikasi.user.index');
-    Route::get('/verifikasi/user/{id}', 'VerifikasiUserController@show')->name('verifikasi.user.show');
-    Route::put('/verifikasi/user/approve/{id}', 'VerifikasiUserController@approve')->name('verifikasi.user.approve');
-    Route::delete('/verifikasi/user/disapprove/{id}', 'VerifikasiUserController@disapprove')->name('verifikasi.user.disapprove');
+    //Route::get('/verifikasi/user', 'VerifikasiUserController@index')->name('verifikasi.user.index');
+    Route::get('/verifikasi/user/{id}', 'VerifikasiController@showUser')->name('verifikasi.user.show');
+    Route::put('/verifikasi/user/approve/{id}', 'VerifikasiController@approveUser')->name('verifikasi.user.approve');
+    Route::delete('/verifikasi/user/disapprove/{id}', 'VerifikasiController@disapproveUser')->name('verifikasi.user.disapprove');
 });

@@ -16,7 +16,7 @@ class AuthApiController extends Controller
         $validator = Validator::make($request->all(), [
             'username' => 'required',
             'password' => 'required|string|min:6|max:20',
-            'namalengkap' => 'required',
+            'namalengkap' => 'required|string',
             'alamat' => 'required',
             'nomorktp' => 'required',
             'nohp' => 'required',
@@ -24,17 +24,11 @@ class AuthApiController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Lengkapi formulir dengan benar',
-            ], 422);
+            return response()->json(['message' => 'Lengkapi formulir dengan benar'], 422);
         }
 
         if($user = User::where('username',$request->username)->first()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Username sudah digunakan',
-            ], 422);
+            return response()->json(['message' => 'Username sudah digunakan'], 409);
         }
 
         $user = new User();
@@ -53,15 +47,9 @@ class AuthApiController extends Controller
         $user->password = bcrypt($request->password);
 
         if ($user->save()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Tunggu verifikasi kami',
-            ], 201);
+            return response()->json(['message' => 'Tunggu verifikasi kami'], 201);
         } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan',
-            ], 404);
+            return response()->json(['message' => 'Terjadi kesalahan'], 404);
         }
     }
  
@@ -71,24 +59,17 @@ class AuthApiController extends Controller
         $jwt_token = null;
  
         if (!$jwt_token = auth('api')->attempt($input)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Username atau password salah',
-            ], 401);
+            return response()->json(['message' => 'Username atau password salah'], 401);
         }
 
         if ($user = User::where( [['username', $request->username], ['is_verif', 1]] )->first()) {
             return response()->json([
-                'success' => true,
                 'message' => 'Login berhasil',
                 'user' => $user,
                 'token' => $jwt_token,
             ]);
         } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Silahkan tunggu verifikasi admin',
-            ], 401);
+            return response()->json(['message' => 'Silahkan tunggu verifikasi admin'], 403);
         }
     }
  
@@ -97,15 +78,10 @@ class AuthApiController extends Controller
         try {
             auth('api')->invalidate();
  
-            return response()->json([
-                'success' => true,
-                'message' => 'Berhasil logout'
-            ]);
+            return response()->json(['message' => 'Berhasil logout'], 200);
         } catch (JWTException $exception) {
             return response()->json([
-                'success' => false,
-                'message' => 'Logout gagal'
-            ], 500);
+                'message' => 'Logout gagal'], 500);
         }
     }
  
@@ -114,15 +90,11 @@ class AuthApiController extends Controller
         try {
             $user = auth('api')->authenticate();
             return response()->json([
-                'success' => true,
                 'message' => 'Data user',
                 'user' => $user
-            ]);
+            ], 200);
         } catch (JWTException $exception) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data user gagal diperoleh'
-            ], 500);
+            return response()->json(['message' => 'Data user gagal diperoleh'], 500);
         }
 
     }

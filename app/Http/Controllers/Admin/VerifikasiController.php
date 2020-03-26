@@ -19,10 +19,12 @@ class VerifikasiController extends Controller
         $kontenPerpanjangan = Konten::whereHas('perpanjangan', function (Builder $query) {
             $query->where('status', 'verifikasi');
         })->with('perpanjangan')->get();
-
+        
         //$perpanjangan = Perpanjangan::where('status','verifikasi')->with('konten')->get();
 
-        return view('admin.verifikasi.index', compact('konten','kontenPerpanjangan'));
+        $user = User::where('is_verif',false)->get();
+
+        return view('admin.verifikasi.index', compact('konten','kontenPerpanjangan','user'));
     }
 
     public function showKonten($id)
@@ -49,6 +51,18 @@ class VerifikasiController extends Controller
         return view('admin.verifikasi.perpanjanganShow', compact('kontenPerpanjangan'));
     }
 
+    public function showUser($id)
+    {
+        $user = User::where('is_verif',false)->find($id);
+
+        if (!$user) {
+            return redirect()->route('admin.verifikasi.index')
+                        ->with('danger','Penggalang Dana tidak ditemukan');
+        }
+  
+        return view('admin.verifikasi.userShow', compact('user'));
+    }
+
     public function approveKonten($id)
     {
         Konten::where('id', $id)->update(array('status' => 'aktif'));
@@ -68,7 +82,11 @@ class VerifikasiController extends Controller
 
     public function approvePerpanjangan($id)
     {
-        $perpanjangan = Perpanjangan::where('id', $id)->update(array('status' => 'diterima'));
+        Perpanjangan::where('id', $id)->update(array('status' => 'diterima'));
+
+        $perpanjangan = Perpanjangan::where('id', $id)->first();
+
+        $konten = Konten::where('id',$perpanjangan->id_konten)->increment('lama_donasi', $perpanjangan->jumlah_hari);
 
         return redirect()->route('admin.verifikasi.index')
                         ->with('success','Verifikasi perpanjangan diterima');
@@ -80,5 +98,30 @@ class VerifikasiController extends Controller
 
         return redirect()->route('admin.verifikasi.index')
                         ->with('warning','Verifikasi perpanjangan ditolak');
+    }
+
+    public function approveUser($id)
+    {
+        User::where('id', $id)->update(array('is_verif' => true));
+
+        return redirect()->route('admin.verifikasi.index')
+                        ->with('success','Verifikasi diterima');
+    }
+
+    // public function disaproveUser($id)
+    // {
+    //     $user = User::where('id', $id)->update(array('is_verif' => false));
+
+    //     return redirect()->route('admin.verifikasi.index')
+    //                     ->with('success','Verifikasi ditolak');
+    // }
+
+    //record dihapus
+    public function disapproveUser($id)
+    {
+        User::where('id', $id)->delete();
+
+        return redirect()->route('admin.verifikasi.index')
+                        ->with('warning','Verifikasi ditolak');
     }
 }

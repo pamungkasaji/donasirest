@@ -35,7 +35,7 @@ Route::middleware('auth.jwt')->get('users', function () {
   Route::get('konten/{konten}/donatur', 'DonaturController@index');
   Route::get('konten/{konten}/donatur/{id}', 'DonaturController@show');//
   Route::post('konten/{konten}/donatur', 'DonaturController@store');
-  Route::put('konten/{konten}/donatur/{id}', 'DonaturController@update');
+  Route::put('konten/{konten}/donatur/{id}', 'DonaturController@approve');
   Route::delete('konten/{konten}/donatur/{id}', 'DonaturController@destroy');
 
   Route::get('konten/{konten}/perkembangan', 'PerkembanganController@index');

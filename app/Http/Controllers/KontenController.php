@@ -25,7 +25,6 @@ class KontenController extends Controller
         $konten = Konten::with('user')->where('status', '!=', 'verifikasi')->get();
 
         return response()->json([
-            'success' => true,
             'message' => 'Daftar konten penggalangan dana',
             'data' => $konten
         ],200);
@@ -36,18 +35,14 @@ class KontenController extends Controller
         $validator = Validator::make($request->all(), [
             'judul' => 'required',
             'deskripsi' => 'required',
-            //'id_user' => 'required',
             'target' => 'required',
-            'lama_donasi' => 'required',
+            'lama_donasi' => 'required|integer',
             'gambar' => 'required',
             'nomorrekening' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Lengkapi formulir dengan benar',
-            ], 422);
+            return response()->json(['message' => 'Lengkapi formulir dengan benar'], 422);
         }
 
         $user = auth('api')->authenticate();
@@ -68,15 +63,11 @@ class KontenController extends Controller
 
         if ($user->konten()->save($konten)) {
             return response()->json([
-                'success' => true,
                 'message' => 'Tunggu verifikasi kami',
                 'konten' => $konten
             ], 201);
         } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan',
-            ], 404);
+            return response()->json(['message' => 'Terjadi kesalahan'], 500);
         }
     }
 
@@ -85,16 +76,12 @@ class KontenController extends Controller
         $konten = Konten::with('user')->where('status', '!=', 'verifikasi')->find($id);
  
         if (!$konten) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Penggalangan Dana tidak ditemukan'
-            ], 400);
+            return response()->json(['message' => 'Penggalangan Dana tidak ditemukan'], 404);
         }
      
         //return response()->json($konten,200);
 
         return response()->json([
-            'success' => true,
             'message' => 'Detail konten penggalangan dana',
             'konten' => $konten
         ],200);
@@ -107,24 +94,17 @@ class KontenController extends Controller
         $konten = $user->konten()->find($id);
  
         if (!$konten) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Konten penggalangan dana tidak ditemukan'
-            ], 404);
+            return response()->json(['message' => 'Konten penggalangan dana tidak ditemukan'], 404);
         }
 
         if($request->has('status')) {
             ($konten->update(['status' => $request->status]));
             return response()->json([
-                'success' => true,
                 'message' => 'Update berhasil',
                 'konten' => $konten
             ], 200);
         } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan update',
-            ], 500);
+            return response()->json(['message' => 'Terjadi kesalahan update'], 500);
         }
     }
 
@@ -136,10 +116,7 @@ class KontenController extends Controller
         $konten = $user->konten()->find($id);
  
         if (!$konten) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Konten penggalangan dana tidak ditemukan'
-            ], 404);
+            return response()->json(['message' => 'Konten penggalangan dana tidak ditemukan'], 404);
         }
 
         //cari path file
@@ -147,30 +124,21 @@ class KontenController extends Controller
     
         //hapus di record DB dan file gambar
         if ($konten->delete() && unlink($file_path)) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Konten penggalangan dana berhasil dihapus'
-            ], 200);
+            return response()->json(['message' => 'Konten penggalangan dana berhasil dihapus'], 200);
         } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan penghapusan konten'
-            ], 500);
+            return response()->json(['message' => 'Terjadi kesalahan penghapusan konten'], 500);
         }
     }
 
+    //pencarian berdasarkan judul
     public function showByJudul($judul)
     {
-        //$konten = Konten::where('judul', 'LIKE', '%'.$judul.'%')->get();
-        //return $konten; 
-
         $konten = Konten::where([
             ['judul', 'LIKE', '%'.$judul.'%'],
             ['status', '!=', 'verifikasi']])
             ->get();
 
         return response()->json([
-            'success' => true,
             'message' => 'Daftar konten penggalangan dana',
             'data' => $konten
         ],200);
@@ -183,7 +151,6 @@ class KontenController extends Controller
         $konten = $user->konten()->with('user')->get();
 
         return response()->json([
-            'success' => true,
             'message' => 'Daftar konten penggalangan dana',
             'data' => $konten
         ],200);
@@ -196,14 +163,10 @@ class KontenController extends Controller
         $konten = $user->konten()->with('user','perpanjangan')->find($id);
  
         if (!$konten) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Konten penggalangan dana tidak ditemukan'
-            ], 404);
+            return response()->json(['message' => 'Konten penggalangan dana tidak ditemukan'], 404);
         }
 
         return response()->json([
-            'success' => true,
             'message' => 'Detail konten penggalangan dana',
             'konten' => $konten
         ],200);

@@ -23,7 +23,6 @@ class PerkembanganController extends Controller
         $perkembangan = $konten->perkembangan()->orderBy('created_at', 'desc')->get();
 
         return response()->json([
-            'success' => true,
             'message' => 'Daftar perkembangan penggalangan dana',
             'data' => $perkembangan
         ],200);
@@ -38,19 +37,13 @@ class PerkembanganController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Lengkapi form perkembangan',
-            ], 422);
+            return response()->json(['message' => 'Lengkapi form perkembangan'], 422);
         }
 
         $user = auth('api')->authenticate();
 
         if( !$user->konten()->where('konten.id_user', $konten->id_user)->first() ){
-            return response()->json([
-                'success' => false,
-                'message' => 'Anda tidak memiliki akses pada fitur ini'
-            ], 403);
+            return response()->json(['message' => 'Anda tidak memiliki akses pada fitur ini'], 401);
         }
 
         $perkembangan = new Perkembangan();
@@ -66,16 +59,12 @@ class PerkembanganController extends Controller
 
         if ($konten->perkembangan()->save($perkembangan)) {
             $response = [
-                'success' => true,
                 'message' => "Perkembangan ditambahkan",
                 'perkembangan' => $perkembangan
             ];
             return response()->json($response,201);
         } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan penambahan perkembangan',
-            ], 404);
+            return response()->json(['message' => 'Terjadi kesalahan penambahan perkembangan'], 500);
         }
     }
 
@@ -84,19 +73,13 @@ class PerkembanganController extends Controller
         $perkembangan = $konten->perkembangan()->find($id);
 
         if (!$perkembangan) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Perkembangan tidak ditemukan'
-            ], 404);
+            return response()->json(['message' => 'Perkembangan tidak ditemukan'], 404);
         }
     
         $user = auth('api')->authenticate();
 
         if( !$user->konten()->where('konten.id_user', $konten->id_user)->first() ){
-            return response()->json([
-                'success' => false,
-                'message' => 'Anda tidak memiliki akses pada fitur ini'
-            ], 403);
+            return response()->json(['message' => 'Anda tidak memiliki akses pada fitur ini'], 401);
         }
 
         //cari path file
@@ -104,15 +87,9 @@ class PerkembanganController extends Controller
 
         //hapus di record DB dan file gambar
         if ($perkembangan->delete() && unlink($file_path)) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Perkembangan berhasil dihapus'
-            ], 200);
+            return response()->json(['message' => 'Perkembangan berhasil dihapus'], 200);
         } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan penghapusan perkembangan'
-            ], 500);
+            return response()->json(['message' => 'Terjadi kesalahan penghapusan perkembangan'], 500);
         }
     }
 }
