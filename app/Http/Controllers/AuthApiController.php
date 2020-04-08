@@ -18,7 +18,7 @@ class AuthApiController extends Controller
             'password' => 'required|string|min:6|max:20',
             'namalengkap' => 'required|string',
             'alamat' => 'required',
-            'nomorktp' => 'required',
+            //'nomorktp' => 'required',
             'nohp' => 'required',
             'fotoktp' => 'required',
         ]);

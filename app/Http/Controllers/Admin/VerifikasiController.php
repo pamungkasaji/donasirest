@@ -82,11 +82,13 @@ class VerifikasiController extends Controller
 
     public function approvePerpanjangan($id)
     {
-        Perpanjangan::where('id', $id)->update(array('status' => 'diterima'));
+        //Perpanjangan::where('id', $id)->update(array('status' => 'diterima'));
 
         $perpanjangan = Perpanjangan::where('id', $id)->first();
 
         $konten = Konten::where('id',$perpanjangan->id_konten)->increment('lama_donasi', $perpanjangan->jumlah_hari);
+
+        $perpanjangan->delete();
 
         return redirect()->route('admin.verifikasi.index')
                         ->with('success','Verifikasi perpanjangan diterima');

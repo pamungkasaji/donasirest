@@ -35,11 +35,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($konten as $konten)
+                            @php
+                            $no = 1;
+                            @endphp
+                            @foreach($kontens as $konten)
                             <tr>
-                                <th>{{ $konten->id }}</th>
+                                <th>{{ $no++ }}</th>
                                 <td>{{ $konten->judul }}</td>
-                                <td>{{ $konten->target }}</td>
+                                <td>Rp. <?php echo number_format($konten->target, 0, ',', '.'); ?></td>
                                 <td>{{ $konten->lama_donasi }}</td>
                                 <td>{{ $konten->status }}</td>
                                 <td>
@@ -47,9 +50,10 @@
                                 </td>
                             </tr>
                             @endforeach
-
                         </tbody>
+
                     </table>
+                    {{ $kontens->links() }}
                 </div>
             </div>
         </div>

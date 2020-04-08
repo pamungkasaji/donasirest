@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Konten extends Model
 {
-    //
     protected $fillable = [
         'judul','deskripsi','gambar','target','lama_donasi', 'nomorrekening',
-        'id_user', 'status',
+        'id_user','bank', 'status',
     ];
 
     protected $table = 'konten';

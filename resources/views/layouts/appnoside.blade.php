@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Donasi Pendidikan') }}</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -42,11 +42,19 @@
 
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                AKUN
+                                MENU
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-
+                                <a class="dropdown-item" href="{{ route('admin.verifikasi.index') }}">
+                                    Verifikasi
+                                </a>
+                                <a class="dropdown-item" href="{{ route('admin.konten.index') }}">
+                                    Konten Management
+                                </a>
+                                <a class="dropdown-item" href="{{ route('admin.user.index') }}">
+                                    Management Penggalang Dana
+                                </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
@@ -63,31 +71,7 @@
         </nav>
 
         <main class="py-4">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2 bg-light">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Admin</h4>
-                            </div>
-                            <div class="bg-light border-right" id="sidebar-wrapper">
-                                <div class="list-group list-group-flush">
-                                    <a href="{{ route('admin.dashboard') }}" class="list-group-item list-group-item-action bg-light" style="font-size: 17px">Dashboard</a>
-                                    <a href="{{ route('admin.verifikasi.index') }}" class="list-group-item list-group-item-action bg-light" style="font-size: 17px">Verifikasi</a>
-                                    <a href="{{ route('admin.konten.index') }}" class="list-group-item list-group-item-action bg-light" style="font-size: 17px">Konten</a>
-                                    <a href="{{ route('admin.user.index') }}" class="list-group-item list-group-item-action bg-light" style="font-size: 17px">Penggalang Dana</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-9">
-                        <div id="main">
-                            @yield('content')
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            @yield('content')
         </main>
     </div>
 </body>

@@ -19,11 +19,21 @@ Auth::routes();
 
 Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 
-Route::get('/home', 'HomeController@index')->name('home');
-
 Route::namespace('Admin')->middleware('auth')->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('/konten', 'AdminKontenController', ['except' => ['create', 'store']]);
-    Route::resource('/user', 'AdminUserController', ['except' => ['create', 'store']]);
+    
+    Route::get('/dashboard','HomeController@index')->name('dashboard');
+
+    //Route::resource('/konten', 'AdminKontenController', ['except' => ['create', 'store']]);
+    //Route::resource('/user', 'AdminUserController', ['except' => ['create', 'store']]);
+
+    Route::get('/konten', 'AdminKontenController@index')->name('konten.index');
+    Route::get('/konten/{id}', 'AdminKontenController@show')->name('konten.show');
+    Route::put('/konten/{id}/nonaktif', 'AdminKontenController@nonaktif')->name('konten.nonaktif');
+    Route::delete('/konten/{id}/delete', 'AdminKontenController@delete')->name('konten.delete');
+
+    Route::get('/user', 'AdminUserController@index')->name('user.index');
+    Route::get('/user/{id}', 'AdminUserController@show')->name('user.show');
+    Route::delete('/user/{id}', 'AdminUserController@delete')->name('user.delete');
 
     Route::get('/verifikasi', 'VerifikasiController@index')->name('verifikasi.index');
 

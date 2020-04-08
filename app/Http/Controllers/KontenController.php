@@ -22,7 +22,7 @@ class KontenController extends Controller
 
     public function index()
     {
-        $konten = Konten::with('user')->where('status', '!=', 'verifikasi')->get();
+        $konten = Konten::with('user')->where('status', '!=', 'verifikasi')->where('status', '!=', 'ditolak')->get();
 
         return response()->json([
             'message' => 'Daftar konten penggalangan dana',
@@ -39,6 +39,7 @@ class KontenController extends Controller
             'lama_donasi' => 'required|integer',
             'gambar' => 'required',
             'nomorrekening' => 'required',
+            'bank' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -60,6 +61,7 @@ class KontenController extends Controller
         $konten->target = $request->target;
         $konten->lama_donasi = $request->lama_donasi;
         $konten->nomorrekening = $request->nomorrekening;
+        $konten->bank = $request->bank;
 
         if ($user->konten()->save($konten)) {
             return response()->json([

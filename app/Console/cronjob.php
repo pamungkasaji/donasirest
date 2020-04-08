@@ -11,7 +11,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "UPDATE konten SET lama_donasi=lama_donasi - 1 WHERE lama_donasi>0";
+$sql = "UPDATE konten SET lama_donasi=lama_donasi - 1 WHERE lama_donasi>0 AND status='aktif'";
 
 if ($conn->query($sql) === TRUE) {
     echo "Update lama donasi sukses";

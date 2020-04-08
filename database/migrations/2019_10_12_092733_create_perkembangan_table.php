@@ -17,15 +17,13 @@ class CreatePerkembanganTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_konten');
             $table->string('judul');
-            $table->string('gambar');
-            $table->text('deskripsi');
-            //$table->date('created_at');
-            $table->foreign('id_konten')->references('id')->on('konten')->onDelete('cascade');
+            $table->string('gambar')->nullable();
             //$table->string('uangterpakai');
-            //$table->date('tanggal');
+            $table->integer('pengeluaran')->nullable();
+            $table->text('deskripsi');
+            $table->foreign('id_konten')->references('id')->on('konten')->onDelete('cascade');
             
             $table->timestamp('created_at')->useCurrent();
-            //$table->timestamps();
         });
     }
 

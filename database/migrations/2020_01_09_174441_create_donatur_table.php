@@ -22,11 +22,9 @@ class CreateDonaturTable extends Migration
             $table->integer('jumlah');
             $table->string('bukti');
             $table->string('nohp');
-            //$table->dateTime('created_at');
             $table->foreign('id_konten')->references('id')->on('konten')->onDelete('cascade');
 
             $table->timestamp('created_at')->useCurrent();
-            //$table->timestamps();
         });
     }
 

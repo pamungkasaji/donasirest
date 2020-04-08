@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Perkembangan extends Model
 {
-    //
-
     protected $fillable = [
         'judul', 'gambar','id_konten','deskripsi', 
     ];
@@ -17,7 +15,6 @@ class Perkembangan extends Model
     public $timestamps = false;
 
     public function konten(){
-        //belongsTo(related, foreign key, owner key)
         return $this->belongsTo(Konten::class , 'id_konten' , 'id');
     }
 }

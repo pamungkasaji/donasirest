@@ -35,11 +35,14 @@
                             </tr>
                         </thead>
                         <tbody>
+                        @php
+                            $no1 = 1;
+                        @endphp
                             @foreach($konten as $konten)
                             <tr>
-                                <th>{{ $konten->id }}</th>
+                                <th>{{ $no1++ }}</th>
                                 <td>{{ $konten->judul }}</td>
-                                <td>{{ $konten->target }}</td>
+                                <td>Rp. <?php echo number_format($konten->target, 0, ',', '.'); ?></td>
                                 <td>{{ $konten->lama_donasi }}</td>
                                 <td>{{ $konten->status }}</td>
                                 <td>
@@ -52,6 +55,7 @@
                     </table>
                 </div>
             </div>
+            <br>
 
             <div class="card">
                 <div class="card-header">Perpanjangan</div>
@@ -69,9 +73,12 @@
                             </tr>
                         </thead>
                         <tbody>
+                        @php
+                            $no2 = 1;
+                        @endphp
                             @foreach($kontenPerpanjangan as $kontenPerpanjangan)
                             <tr>
-                                <th>{{ $kontenPerpanjangan->id }}</th>
+                                <th>{{ $no2++ }}</th>
                                 <td>{{ $kontenPerpanjangan->judul }}</td>
                                 <td>{{ $kontenPerpanjangan->perpanjangan->jumlah_hari }}</td>
                                 <td>{{ $kontenPerpanjangan->status }}</td>
@@ -84,6 +91,8 @@
                     </table>
                 </div>
             </div>
+            <br>
+
             <div class="card">
                 <div class="card-header">Verifikasi Penggalang Dana</div>
 
@@ -100,9 +109,12 @@
                             </tr>
                         </thead>
                         <tbody>
+                        @php
+                            $no3 = 1;
+                        @endphp
                             @foreach($user as $user)
                             <tr>
-                                <th>{{ $user->id }}</th>
+                                <th>{{ $no3++ }}</th>
                                 <td>{{ $user->namalengkap }}</td>
                                 <td>{{ $user->nomorktp }}</td>
                                 <td>{{ $user->nohp }}</td>

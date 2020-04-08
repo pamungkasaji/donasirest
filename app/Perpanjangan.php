@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Perpanjangan extends Model
 {
-    //
     protected $fillable = [
         'status','jumlah_hari', 'alasan','id_konten', 
     ];
@@ -16,7 +15,6 @@ class Perpanjangan extends Model
     public $timestamps = false;
 
     public function konten(){
-        //belongsTo(related, foreign key, owner key)
         return $this->belongsTo(Konten::class , 'id_konten' , 'id');
     }
 }

@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Perkembangan;
 use App\Konten;
-use App\Http\Resources\PerkembanganResource; 
-use App\Http\Resources\KontenResource; 
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 
@@ -32,7 +30,6 @@ class PerkembanganController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'judul' => 'required',
-            'gambar' => 'required',
             'deskripsi' => 'required',
         ]);
 
@@ -48,12 +45,15 @@ class PerkembanganController extends Controller
 
         $perkembangan = new Perkembangan();
 
-        //upload dan atur nama file
-        $file_name = uniqid().str_slug($request->judul).'.jpg';
-        $file_path = public_path().'/images/perkembangan';
-        $request->file('gambar')->move($file_path, $file_name);
-
-        $perkembangan->gambar = $file_name;
+        if($request->has('gambar')) {
+            //upload dan atur nama file
+            $file_name = uniqid().str_slug($request->judul).'.jpg';
+            $file_path = public_path().'/images/perkembangan';
+            $request->file('gambar')->move($file_path, $file_name);
+    
+            $perkembangan->gambar = $file_name;
+        }
+        
         $perkembangan->judul = $request->judul;
         $perkembangan->deskripsi = $request->deskripsi;
 

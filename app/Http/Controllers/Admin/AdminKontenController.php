@@ -11,12 +11,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 class AdminKontenController extends Controller
 {
-
     public function index()
     {
-        $konten = Konten::all();
+        $kontens = Konten::where('status', '!=','verifikasi')->paginate(20);
 
-        return view('admin.konten.index', compact('konten'));
+        return view('admin.konten.index', compact('kontens'));
     }
 
     public function show($id)
@@ -26,7 +25,15 @@ class AdminKontenController extends Controller
         return view('admin.konten.show', compact('konten'));
     }
 
-    public function destroy($id)
+    public function nonaktif($id)
+    {
+        Konten::where('id', $id)->update(array('status' => 'selesai'));
+
+        return redirect()->route('admin.konten.index')
+                        ->with('warning','Konten penggalangan dana dinonaktifkan');
+    }
+
+    public function delete($id)
     {
         Konten::where('id', $id)->delete();
 

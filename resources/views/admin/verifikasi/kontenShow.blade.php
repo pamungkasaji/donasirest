@@ -5,47 +5,76 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Verifikasi Konten Penggalangan Dana</div>
+                <div class="card-header">
+                    <h5>Verifikasi Konten Penggalangan Dana</h5>
+                </div>
 
                 <div class="card-body" style="margin: 10px">
-                    <h2 class="my-1">{{ $konten->judul }}</h2>
+                    <h3 class="my-1">{{ $konten->judul }}</h3>
                     <div class="row">
                         <div class="col-md-6">
-                            <img src="{{url('/images/konten/')}}/{{$konten->gambar}}" alt="Gambar konten penggalangan dana">
+                            <img src="{{url('/images/konten/')}}/{{$konten->gambar}}" class="img-fluid" alt="Gambar konten penggalangan dana">
                         </div>
 
                         <div class="col-md-4">
                             <br>
-                            <ul>
-                                <li>Status : {{ $konten->status }}</li>
-                                <li>Target : {{ $konten->target }}</li>
-                                <li>Lama Donasi : {{ $konten->lama_donasi }}</li>
-                            </ul>
-
-                            <div class="row justify-content-center">
-                                <form action="{{ route('admin.verifikasi.konten.approve', $konten->id)}}" method="post">
-                                    @csrf
-                                    @method('PUT')
-                                    <button class="btn btn-primary" type="submit" style="margin: 10px">Terima</button>
-                                </form>
-                                <form action="{{ route('admin.verifikasi.konten.disapprove', $konten->id)}}" method="post">
-                                    @csrf
-                                    @method('PUT')
-                                    <button class="btn btn-warning" type="submit" style="margin: 10px">Tolak</button>
-                                </form>
-                            </div>
+                            <h5 class="my-3">Informasi Donasi</h5>
+                            <table>
+                                <tr>
+                                    <td>Status</td>
+                                    <td>:</td>
+                                    <td>{{ $konten->status }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Target</td>
+                                    <td>:</td>
+                                    <td>Rp. <?php echo number_format($konten->target, 0, ',', '.'); ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Lama Donasi</td>
+                                    <td>:</td>
+                                    <td>{{ $konten->lama_donasi }} hari lagi</td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <form action="{{ route('admin.verifikasi.konten.approve', $konten->id)}}" method="post">
+                                            @csrf
+                                            @method('PUT')
+                                            <button class="btn btn-primary" type="submit" style="margin-top: 14px">Terima</button>
+                                        </form>
+                                    </td>
+                                    <td><button class="btn btn-warning" style="margin-left: 14px" data-toggle="modal" data-target="#confirmModal">
+                                            Tolak
+                                        </button></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                     <h5 class="my-3">Deskripsi</h5>
-                    <p> {{ $konten->deskripsi }} </p>
+                    <p style=font-size:15px> {{ $konten->deskripsi }} </p>
                     <br>
                     <h5 class="my-3">Penggalang Dana</h5>
-                    <ul style="list-style-type:none;">
-                        <li>{{ $konten->user->namalengkap }}</li>
-                        <li> {{ $konten->user->username }}</li>
-                        <li>{{ $konten->user->alamat }}</li>
-                        <li> {{ $konten->user->nohp }}</li>
-                    </ul>
+                    <table>
+                        <tr>
+                            <td>Nama</td>
+                            <td>:</td>
+                            <td>{{ $konten->user->namalengkap }}</td>
+                        </tr>
+                        <tr>
+                            <td>Username</td>
+                            <td>:</td>
+                            <td>{{ $konten->user->username }}</td>
+                        </tr>
+                        <tr>
+                            <td>No HP</td>
+                            <td>:</td>
+                            <td>{{ $konten->user->nohp }}</td>
+                        </tr>
+                    </table>
+                    <br>
+                    <a href=" {{ route('admin.user.show', $konten->user->id) }}"><button type="button" class="btn btn-primary">Lihat informasi penggalang dana</button>
                 </div>
             </div>
         </div>

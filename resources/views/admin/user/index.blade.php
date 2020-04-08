@@ -34,9 +34,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($user as $user)
+                        @php
+                            $no = 1;
+                        @endphp
+                            @foreach($users as $user)
                             <tr>
-                                <th>{{ $user->id }}</th>
+                                <th>{{ $no++ }}</th>
                                 <td>{{ $user->namalengkap }}</td>
                                 <td>{{ $user->nomorktp }}</td>
                                 <td>{{ $user->nohp }}</td>
@@ -48,6 +51,7 @@
 
                         </tbody>
                     </table>
+                    {{ $users->links() }}
                 </div>
             </div>
         </div>

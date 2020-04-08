@@ -5,26 +5,92 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Verifikasi Perpanjangan Penggalangan Dana</div>
+                <div class="card-header">
+                    <h5>Verifikasi Perpanjangan Penggalangan Dana</h5>
+                </div>
 
-                <div class="card-body">
+                <div class="card-body" style="margin: 10px">
+                    <h3 class="my-1">{{ $kontenPerpanjangan->judul }}</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="{{url('/images/konten/')}}/{{$kontenPerpanjangan->gambar}}" class="img-fluid" alt="Gambar konten penggalangan dana">
+                        </div>
 
-                    <p> Judul : {{ $kontenPerpanjangan->judul }} </p>
-                    <p> Alasan : {{ $kontenPerpanjangan->perpanjangan->alasan }} </p>
-                    <p> Jumlah hari : {{ $kontenPerpanjangan->perpanjangan->jumlah_hari }} </p>
-                    <p> Nama lengkap : {{ $kontenPerpanjangan->user->namalengkap }} </p>
+                        <div class="col-md-4">
+                            <br>
+                            <h5 class="my-3">Informasi Donasi</h5>
+                            <table>
+                                <tr>
+                                    <td>Status</td>
+                                    <td>:</td>
+                                    <td>{{ $kontenPerpanjangan->status }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Target</td>
+                                    <td>:</td>
+                                    <td>Rp. <?php echo number_format($kontenPerpanjangan->target, 0, ',', '.'); ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Terkumpul</td>
+                                    <td>:</td>
+                                    <td>Rp. <?php echo number_format($kontenPerpanjangan->terkumpul, 0, ',', '.'); ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Prosentase</td>
+                                    <td>:</td>
+                                    <td>{{ round((float)$kontenPerpanjangan->terkumpul/$kontenPerpanjangan->target * 100 )}}%</td>
+                                </tr>
+                                <tr>
+                                    <td>Lama Donasi</td>
+                                    <td>:</td>
+                                    <td>{{ $kontenPerpanjangan->lama_donasi }} hari lagi</td>
+                                </tr>
+                            </table>
 
-                    <img src="{{url('/images/konten/')}}/{{$kontenPerpanjangan->gambar}}" alt="Gambar konten penggalangan dana">
+                        </div>
+                    </div>
+                    <h5 class="my-3">Informasi Perpanjangan</h5>
+                    <p style=font-size:16px">Alasan :</p>
+                    <p style=font-size:16px"> {{ $kontenPerpanjangan->perpanjangan->alasan }} </p>
+                    <p style=font-size:16px"> Jumlah hari : {{ $kontenPerpanjangan->perpanjangan->jumlah_hari }} </p>
+                    <table>
+                        <tr>
+                            <td>
+                                <form action="{{ route('admin.verifikasi.perpanjangan.approve', $kontenPerpanjangan->perpanjangan->id)}}" method="post">
+                                    @csrf
+                                    @method('PUT')
+                                    <button class="btn btn-primary" type="submit" style="margin-top: 14px">Terima</button>
+                                </form>
+                            </td>
+                            <td><button class="btn btn-warning" style="margin-left: 14px" data-toggle="modal" data-target="#confirmModal">
+                                    Tolak
+                                </button></td>
+                        </tr>
+                    </table>
                     <br>
-
-                    <form action="{{ route('admin.verifikasi.perpanjangan.approve', $kontenPerpanjangan->perpanjangan->id)}}" method="post">
-                        @csrf
-                        @method('PUT')
-                        <button class="btn btn-primary" type="submit">Terima</button>
-                    </form>
-                    <button class="btn btn-warning" data-toggle="modal" data-target="#confirmModal">
-                        Tolak
-                    </button>
+                    <h5 class="my-3">Deskripsi</h5>
+                    <p  style=font-size:15px> {{ $kontenPerpanjangan->deskripsi }} </p>
+                    <br>
+                    <h5 class="my-3">Penggalang Dana</h5>
+                    <table>
+                        <tr>
+                            <td>Nama</td>
+                            <td>:</td>
+                            <td>{{ $kontenPerpanjangan->user->namalengkap }}</td>
+                        </tr>
+                        <tr>
+                            <td>Username</td>
+                            <td>:</td>
+                            <td>{{ $kontenPerpanjangan->user->username }}</td>
+                        </tr>
+                        <tr>
+                            <td>No HP</td>
+                            <td>:</td>
+                            <td>{{ $kontenPerpanjangan->user->nohp }}</td>
+                        </tr>
+                    </table>
+                    <br>
+                    <a href=" {{ route('admin.user.show', $kontenPerpanjangan->user->id) }}"><button type="button" class="btn btn-primary">Lihat informasi penggalang dana</button>
                 </div>
             </div>
         </div>
@@ -48,10 +114,10 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 <form action="{{ route('admin.verifikasi.perpanjangan.disapprove', $kontenPerpanjangan->perpanjangan->id)}}" method="post">
-                        @csrf
-                        @method('PUT')
-                        <button class="btn btn-warning" type="submit">Tolak</button>
-                    </form>
+                    @csrf
+                    @method('PUT')
+                    <button class="btn btn-warning" type="submit">Tolak</button>
+                </form>
             </div>
         </div>
     </div>

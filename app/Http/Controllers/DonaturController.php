@@ -7,6 +7,7 @@ use App\Donatur;
 use App\Http\Resources\DonaturResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use JWTAuth;
 use File;
 
@@ -14,7 +15,7 @@ class DonaturController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.jwt')->only('update, delete, destroy, indexUser, showUser');
+        $this->middleware('auth.jwt')->only('approve, disapprove, indexUser, showUser');
     }
 
     //mencari tahu apakan user memiliki akses ke konten
@@ -31,7 +32,7 @@ class DonaturController extends Controller
     public function index(Konten $konten) 
     {    
         //ambil daftar donatur yg sudah diterima
-        $donatur = $konten->donatur()->where('is_diterima',true)->get();
+        $donatur = $konten->donatur()->where('is_diterima',true)->latest()->get();
 
         //ubah nama menjadi anonim untuk is_anonim true
         foreach($donatur as $key => $value) { 
@@ -118,7 +119,7 @@ class DonaturController extends Controller
         }
     }
 
-    public function destroy(Konten $konten, $id)
+    public function disapprove(Konten $konten, $id)
     {
         if (!$donatur = $konten->donatur()->find($id)) {
             return response()->json(['message' => 'Donatur tidak ditemukan'], 404);
@@ -145,13 +146,15 @@ class DonaturController extends Controller
     {
         $user = auth('api')->authenticate();
 
-        $donatur = $user->konten()
-        ->with(['donatur' => function($query){
-            $query->where('is_diterima', 0);
-            }])
-        ->get()
-        ->pluck('donatur')
-        ->collapse();
+        $donatur = DB::table('donatur')
+        ->select('konten.judul', 'donatur.*')
+		->join('konten', 'konten.id', '=', 'donatur.id_konten')
+		->join('users', 'users.id', '=', 'konten.id_user')
+		->where('donatur.is_diterima' , false)
+		->where('users.id', $user->id)
+        ->orderBy('judul')
+        ->first()
+		->get(); 
 
         if (!$donatur) {
             return response()->json(['message' => 'Daftar donatur tidak ditemukan'], 404);
