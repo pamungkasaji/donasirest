@@ -65,9 +65,7 @@ class KontenController extends Controller
 
         if ($user->konten()->save($konten)) {
             return response()->json([
-                'message' => 'Tunggu verifikasi kami',
-                'konten' => $konten
-            ], 201);
+                'message' => 'Tunggu verifikasi kami'], 201);
         } else {
             return response()->json(['message' => 'Terjadi kesalahan'], 500);
         }

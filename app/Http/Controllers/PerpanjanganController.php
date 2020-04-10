@@ -16,21 +16,6 @@ class PerpanjanganController extends Controller
         $this->middleware('auth.jwt')->only('store,destroy');
     }
 
-    //admin
-    public function index(Konten $konten) 
-    {    
-        $perpanjangan = Perpanjangan::with('konten')-where('status', '=', 'verifikasi')->get();
-
-        if (!$perpanjangan) {
-            return response()->json(['message' => 'Penggalangan Dana tidak ditemukan'], 400);
-        }
-
-        return response()->json([
-            'message' => 'Daftar permintaan perpanjangan',
-            'data' => $perpanjangan
-        ],200);
-    }
-
     public function store(Request $request, Konten $konten)
     {
         $validator = Validator::make($request->all(), [

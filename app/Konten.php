@@ -15,6 +15,10 @@ class Konten extends Model
 
     public $timestamps = false;
 
+    protected $dates = [
+        'created_at'
+    ];
+    
     public function user(){
         //belongsTo(related, foreign key, owner key)
         return $this->belongsTo(User::class , 'id_user' , 'id');

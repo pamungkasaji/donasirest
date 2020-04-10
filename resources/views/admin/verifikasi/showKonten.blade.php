@@ -97,7 +97,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                <form action="{{ route('admin.verifikasi.konten.disapprove', $konten->id)}}" method="post">
+                <form action="{{ route('admin.verifikasi.konten.disapprove', $konten->id) }}" method="post">
                     @csrf
                     @method('PUT')
                     <button class="btn btn-warning" type="submit">Ya</button>

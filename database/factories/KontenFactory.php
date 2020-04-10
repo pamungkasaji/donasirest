@@ -17,7 +17,6 @@ $factory->define(Konten::class, function (Faker $faker) {
         'lama_donasi' => $faker->numberBetween( 30, 90),
         'nomorrekening' => $faker->randomNumber(8),
         'bank' => $faker->name,
-        //'is_verif' => $faker->boolean($chanceOfGettingTrue = 70),
         'status' => $faker->randomElement($array = array ('verifikasi','aktif','selesai','ditolak')),
     ];
 });

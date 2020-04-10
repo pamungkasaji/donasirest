@@ -18,17 +18,6 @@ class DonaturController extends Controller
         $this->middleware('auth.jwt')->only('approve, disapprove, indexUser, showUser');
     }
 
-    //mencari tahu apakan user memiliki akses ke konten
-    public function haveAccess(Konten $konten) {
-        $user = auth('api')->authenticate();
-
-        if (!$user->konten()->where('konten.id_user', $konten->id_user)->first()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     public function index(Konten $konten) 
     {    
         //ambil daftar donatur yg sudah diterima
@@ -105,8 +94,10 @@ class DonaturController extends Controller
             return response()->json(['message' => 'Donatur tidak ditemukan'], 404);
         }
 
+        $user = auth('api')->authenticate();
+
         //mencari tahu apakan user memiliki akses ke konten
-        if( !$this->haveAccess($konten) ){
+        if( !$user->konten()->where('konten.id_user', $konten->id_user)->first() ){
             return response()->json(['message' => 'Anda tidak memiliki akses pada fitur ini'], 401);
         }
 
@@ -125,8 +116,10 @@ class DonaturController extends Controller
             return response()->json(['message' => 'Donatur tidak ditemukan'], 404);
         }
 
+        $user = auth('api')->authenticate();
+
         //mencari tahu apakan user memiliki akses ke konten
-        if( !$this->haveAccess($konten) ){
+        if( !$user->konten()->where('konten.id_user', $konten->id_user)->first() ){
             return response()->json(['message' => 'Anda tidak memiliki akses pada fitur ini'], 401);
         }
     

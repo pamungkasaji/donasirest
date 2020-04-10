@@ -68,14 +68,14 @@
                     <div class="col-md-2 bg-light">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Admin</h4>
+                                <h5>Admin</h5>
                             </div>
                             <div class="bg-light border-right" id="sidebar-wrapper">
                                 <div class="list-group list-group-flush">
-                                    <a href="{{ route('admin.dashboard') }}" class="list-group-item list-group-item-action bg-light" style="font-size: 17px">Dashboard</a>
-                                    <a href="{{ route('admin.verifikasi.index') }}" class="list-group-item list-group-item-action bg-light" style="font-size: 17px">Verifikasi</a>
-                                    <a href="{{ route('admin.konten.index') }}" class="list-group-item list-group-item-action bg-light" style="font-size: 17px">Konten</a>
-                                    <a href="{{ route('admin.user.index') }}" class="list-group-item list-group-item-action bg-light" style="font-size: 17px">Penggalang Dana</a>
+                                    <a href="{{ route('admin.dashboard') }}" class="list-group-item list-group-item-action bg-light" style="font-size: 16px">Dashboard</a>
+                                    <a href="{{ url('admin/verifikasi') }}" class="list-group-item list-group-item-action bg-light" style="font-size: 16px">Verifikasi</a>
+                                    <a href="{{ route('admin.konten.index') }}" class="list-group-item list-group-item-action bg-light" style="font-size: 16px">Konten</a>
+                                    <a href="{{ route('admin.user.index') }}" class="list-group-item list-group-item-action bg-light" style="font-size: 16px">Penggalang Dana</a>
                                 </div>
                             </div>
                         </div>

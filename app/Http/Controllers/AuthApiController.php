@@ -62,14 +62,18 @@ class AuthApiController extends Controller
             return response()->json(['message' => 'Username atau password salah'], 401);
         }
 
-        if ($user = User::where( [['username', $request->username], ['is_verif', 1]] )->first()) {
+        $user = User::where('username', $request->username)->first();
+
+        if ($user->status == 'diterima') {
             return response()->json([
                 'message' => 'Login berhasil',
                 'user' => $user,
                 'token' => $jwt_token,
             ]);
-        } else {
+        } else if ($user->status == 'verifikasi'){
             return response()->json(['message' => 'Silahkan tunggu verifikasi admin'], 403);
+        } else {
+            return response()->json(['message' => 'Verifikasi anda ditolak'], 403);
         }
     }
  

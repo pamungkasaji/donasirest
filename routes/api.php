@@ -17,18 +17,17 @@ Route::middleware('auth.jwt')->get('users', function () {
   return auth('api')->user();
 });
 
-  // = belum
+  // = belum tentu dipakai
+  Route::get('konten', 'KontenController@index');
+  Route::get('konten/{id}', 'KontenController@show');//
+  Route::post('konten', 'KontenController@store');
+  Route::put('konten/{id}', 'KontenController@update');//
+  Route::delete('konten/{id}', 'KontenController@destroy');//
 
   Route::post('login', 'AuthApiController@login');
   Route::post('register', 'AuthApiController@register');
   Route::get('logout', 'AuthApiController@logout');
   Route::get('getAuthUser', 'AuthApiController@getAuthUser');//bisa, belum tentu dipakai
-  
-  Route::get('konten', 'KontenController@index');
-  Route::get('konten/{id}', 'KontenController@show');
-  Route::post('konten', 'KontenController@store');
-  Route::put('konten/{id}', 'KontenController@update');//belum tentu dipakai, hanya admin
-  Route::delete('konten/{id}', 'KontenController@destroy');//belum tentu dipakai, hanya admin
 
   Route::get('konten/judul/{judul}', 'KontenController@showByJudul');
   
@@ -48,10 +47,8 @@ Route::middleware('auth.jwt')->get('users', function () {
   Route::post('konten/{konten}/perkembangan', 'PerkembanganController@store');
   Route::delete('konten/{konten}/perkembangan/{id}', 'PerkembanganController@destroy');//belum tentu dipakai
 
-  Route::get('perpanjangan', 'PerpanjanganController@index');//admin
   Route::get('perpanjangan/{id}', 'PerpanjanganController@show');//admin
   Route::post('konten/{konten}/perpanjangan', 'PerpanjanganController@store');
   //Route::put('konten/{konten}/donatur/{id}', 'DonaturController@update');//admin
-  Route::delete('konten/{konten}/perpanjangan/{id}', 'PerpanjanganController@destroy');//admin
 
 

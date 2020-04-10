@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -27,12 +28,12 @@
                                 <tr>
                                     <td>Target</td>
                                     <td>:</td>
-                                    <td>Rp. <?php echo number_format($konten->target, 0, ',', '.'); ?></td>
+                                    <td>Rp. {{ number_format($konten->target, 0, ',', '.') }}</td>
                                 </tr>
                                 <tr>
                                     <td>Terkumpul</td>
                                     <td>:</td>
-                                    <td>Rp. <?php echo number_format($konten->terkumpul, 0, ',', '.'); ?></td>
+                                    <td>Rp. {{ number_format($konten->terkumpul, 0, ',', '.') }}</td>
                                 </tr>
                                 <tr>
                                     <td>Prosentase</td>
@@ -44,18 +45,27 @@
                                     <td>:</td>
                                     <td>{{ $konten->lama_donasi }} hari lagi</td>
                                 </tr>
+                                <tr>
+                                    <td>No Rekening</td>
+                                    <td>:</td>
+                                    <td>{{ $konten->nomorrekening }} ( {{ $konten->bank }} )</td>
+                                </tr>
                             </table>
                             <br>
                             <table>
                                 <tr>
                                     <td>
-                                        <button class="btn btn-warning" <?php if($konten->status != 'aktif') {?> disabled="disabled" <?php } ?> data-toggle="modal" data-target="#nonaktifModal">
+                                        <a class="btn btn-primary" href="{{ route('admin.konten.print', $konten->id) }}" role="button">Print PDF</a>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-warning" style="margin-left: 14px" <?php if ($konten->status != 'aktif') { ?> disabled="disabled" <?php } ?> data-toggle="modal" data-target="#nonaktifModal">
                                             Nonaktifkan
                                         </button></td>
                                     </td>
                                     <td><button class="btn btn-danger" style="margin-left: 14px" data-toggle="modal" data-target="#deleteModal">
                                             Hapus
                                         </button></td>
+
                                 </tr>
                             </table>
                         </div>
@@ -83,6 +93,7 @@
                     </table>
                     <br>
                     <a href=" {{ route('admin.user.show', $konten->user->id) }}"><button type="button" class="btn btn-primary">Lihat informasi penggalang dana</button>
+
                 </div>
             </div>
         </div>

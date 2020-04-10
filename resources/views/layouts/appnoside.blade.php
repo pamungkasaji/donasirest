@@ -46,15 +46,7 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('admin.verifikasi.index') }}">
-                                    Verifikasi
-                                </a>
-                                <a class="dropdown-item" href="{{ route('admin.konten.index') }}">
-                                    Konten Management
-                                </a>
-                                <a class="dropdown-item" href="{{ route('admin.user.index') }}">
-                                    Management Penggalang Dana
-                                </a>
+
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}

@@ -22,10 +22,10 @@ class CreateUsersTable extends Migration
             $table->string('nomorktp');
             $table->string('nohp');
             $table->string('fotoktp');
-            $table->boolean('is_verif')->default(0);
-            //$table->dateTime('created_at');
-
+            $table->string('status')->default('verifikasi');
             $table->timestamp('created_at')->useCurrent();
+
+            //$table->boolean('is_verif')->default(0);
             //$table->timestamps(); 
         });
     }

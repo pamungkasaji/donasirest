@@ -18,24 +18,31 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::post('/login/admin', 'Auth\LoginController@adminLogin');
+Route::get('/home','Admin\HomeController@index')->middleware('auth')->name('home');
 
 Route::namespace('Admin')->middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     
     Route::get('/dashboard','HomeController@index')->name('dashboard');
 
-    //Route::resource('/konten', 'AdminKontenController', ['except' => ['create', 'store']]);
-    //Route::resource('/user', 'AdminUserController', ['except' => ['create', 'store']]);
-
     Route::get('/konten', 'AdminKontenController@index')->name('konten.index');
     Route::get('/konten/{id}', 'AdminKontenController@show')->name('konten.show');
     Route::put('/konten/{id}/nonaktif', 'AdminKontenController@nonaktif')->name('konten.nonaktif');
     Route::delete('/konten/{id}/delete', 'AdminKontenController@delete')->name('konten.delete');
+    Route::get('/konten/{id}/print', 'AdminKontenController@print')->name('konten.print');
 
     Route::get('/user', 'AdminUserController@index')->name('user.index');
     Route::get('/user/{id}', 'AdminUserController@show')->name('user.show');
     Route::delete('/user/{id}', 'AdminUserController@delete')->name('user.delete');
 
-    Route::get('/verifikasi', 'VerifikasiController@index')->name('verifikasi.index');
+    //Route::get('/verifikasi', 'VerifikasiController@index')->name('verifikasi.index');
+
+    Route::get('/verifikasi', function () {
+        return view('admin.verifikasi.verif');
+    });
+
+    Route::get('/verifikasi/konten', 'VerifikasiController@indexKonten')->name('verifikasi.indexKonten');
+    Route::get('/verifikasi/perpanjangan', 'VerifikasiController@indexPerpanjangan')->name('verifikasi.indexPerpanjangan');
+    Route::get('/verifikasi/user', 'VerifikasiController@indexUser')->name('verifikasi.indexUser');
 
     Route::get('/verifikasi/konten/{id}', 'VerifikasiController@showKonten')->name('verifikasi.konten.show');
     Route::put('/verifikasi/konten/approve/{id}', 'VerifikasiController@approveKonten')->name('verifikasi.konten.approve');

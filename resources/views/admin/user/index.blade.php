@@ -28,7 +28,7 @@
                             <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">Nama Lengkap</th>
-                                <th scope="col">Nomor KTP</th>
+                                <th scope="col">Username</th>
                                 <th scope="col">No HP</th>
                                 <th scope="col">Aksi</th>
                             </tr>
@@ -41,7 +41,7 @@
                             <tr>
                                 <th>{{ $no++ }}</th>
                                 <td>{{ $user->namalengkap }}</td>
-                                <td>{{ $user->nomorktp }}</td>
+                                <td>{{ $user->username }}</td>
                                 <td>{{ $user->nohp }}</td>
                                 <td>
                                     <a href=" {{ route('admin.user.show', $user->id) }}"><button type="button" class="btn btn-primary">Detail</button>

@@ -25,6 +25,7 @@ $factory->define(User::class, function (Faker $faker) {
         'namalengkap' => $faker->name,
         'alamat' => $faker->address,
         'nomorktp' => $faker->numberBetween(6000000, 9000000),
-        'is_verif' => $faker->boolean($chanceOfGettingTrue = 70),
+        'status' => $faker->randomElement($array = array ('verifikasi','diterima','ditolak')),
+        //'is_verif' => $faker->boolean($chanceOfGettingTrue = 70),
     ];
 });

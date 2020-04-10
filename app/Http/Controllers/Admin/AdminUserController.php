@@ -11,7 +11,7 @@ class AdminUserController extends Controller
 {
     public function index()
     {
-        $users = User::where('is_verif', true)->paginate(20);
+        $users = User::where('status', 'diterima')->paginate(20);
 
         return view('admin.user.index', compact('users'));
     }
@@ -20,7 +20,7 @@ class AdminUserController extends Controller
     {
         $user = User::find($id);
 
-        $konten = $user->konten()->where('status', '!=', 'verifikasi')->get();
+        $konten = $user->konten()->where('status','aktif')->orWhere('status','selesai')->get();
   
         return view('admin.user.show', compact('user','konten'));
     }
