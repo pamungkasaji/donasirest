@@ -18,7 +18,7 @@ class AuthApiController extends Controller
             'password' => 'required|string|min:6|max:20',
             'namalengkap' => 'required|string',
             'alamat' => 'required',
-            //'nomorktp' => 'required',
+            'nomorktp' => 'required',
             'nohp' => 'required',
             'fotoktp' => 'required',
         ]);
@@ -27,15 +27,15 @@ class AuthApiController extends Controller
             return response()->json(['message' => 'Lengkapi formulir dengan benar'], 422);
         }
 
-        if($user = User::where('username',$request->username)->first()) {
+        if ($user = User::where('username', $request->username)->first()) {
             return response()->json(['message' => 'Username sudah digunakan'], 409);
         }
 
         $user = new User();
 
         //upload dan atur nama file
-        $file_name = uniqid().str_slug($request->namalengkap).'.jpg';
-        $file_path = public_path().'/images/ktp';
+        $file_name = uniqid() . str_slug($request->namalengkap) . '.jpg';
+        $file_path = public_path() . '/images/ktp';
         $request->file('fotoktp')->move($file_path, $file_name);
 
         $user->fotoktp = $file_name;
@@ -52,12 +52,12 @@ class AuthApiController extends Controller
             return response()->json(['message' => 'Terjadi kesalahan'], 404);
         }
     }
- 
+
     public function login(Request $request)
     {
         $input = $request->only('username', 'password');
         $jwt_token = null;
- 
+
         if (!$jwt_token = auth('api')->attempt($input)) {
             return response()->json(['message' => 'Username atau password salah'], 401);
         }
@@ -70,36 +70,23 @@ class AuthApiController extends Controller
                 'user' => $user,
                 'token' => $jwt_token,
             ]);
-        } else if ($user->status == 'verifikasi'){
+        } else if ($user->status == 'verifikasi') {
             return response()->json(['message' => 'Silahkan tunggu verifikasi admin'], 403);
         } else {
             return response()->json(['message' => 'Verifikasi anda ditolak'], 403);
         }
     }
- 
-    public function logout(Request $request)
+
+    public function logout()
     {
         try {
             auth('api')->invalidate();
- 
+
             return response()->json(['message' => 'Berhasil logout'], 200);
         } catch (JWTException $exception) {
             return response()->json([
-                'message' => 'Logout gagal'], 500);
+                'message' => 'Logout gagal'
+            ], 500);
         }
-    }
- 
-    public function getAuthUser(Request $request)
-    {
-        try {
-            $user = auth('api')->authenticate();
-            return response()->json([
-                'message' => 'Data user',
-                'user' => $user
-            ], 200);
-        } catch (JWTException $exception) {
-            return response()->json(['message' => 'Data user gagal diperoleh'], 500);
-        }
-
     }
 }

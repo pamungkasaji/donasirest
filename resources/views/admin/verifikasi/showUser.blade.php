@@ -86,7 +86,7 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 <form action="{{ route('admin.verifikasi.user.disapprove', $user->id)}}" method="post">
                     @csrf
-                    @method('DELETE')
+                    @method('PUT')
                     <button class="btn btn-warning" type="submit">Ya</button>
                 </form>
             </div>

@@ -50,9 +50,24 @@
                         </div>
                     </div>
                     <h5 class="my-3">Informasi Perpanjangan</h5>
-                    <p style=font-size:16px">Alasan :</p>
-                    <p style=font-size:16px"> {{ $kontenPerpanjangan->perpanjangan->alasan }} </p>
-                    <p style=font-size:16px"> Jumlah hari : {{ $kontenPerpanjangan->perpanjangan->jumlah_hari }} </p>
+                    <table>
+                        <tr>
+                            <td width="15%">Status Perpanjangan</td>
+                            <td>:</td>
+                            <td>{{ $kontenPerpanjangan->perpanjangan->status }}</td>
+                        </tr>
+                        <tr>
+                            <td>Jumlah Hari</td>
+                            <td>:</td>
+                            <td>{{ $kontenPerpanjangan->perpanjangan->jumlah_hari }}</td>
+                        </tr>
+                        <tr>
+                            <td>Alasan</td>
+                            <td>:</td>
+                            <td>{{ $kontenPerpanjangan->perpanjangan->alasan }}</td>
+                        </tr>
+                    </table>
+
                     <table>
                         <tr>
                             <td>
@@ -62,7 +77,7 @@
                                     <button class="btn btn-primary" type="submit" style="margin-top: 14px">Terima</button>
                                 </form>
                             </td>
-                            <td><button class="btn btn-warning" style="margin-left: 14px" data-toggle="modal" data-target="#confirmModal">
+                            <td><button class="btn btn-warning" style="margin-left: 14px" <?php if ($kontenPerpanjangan->perpanjangan->status == 'ditolak') { ?> disabled="disabled" <?php } ?> data-toggle="modal" data-target="#confirmModal">
                                     Tolak
                                 </button></td>
                         </tr>

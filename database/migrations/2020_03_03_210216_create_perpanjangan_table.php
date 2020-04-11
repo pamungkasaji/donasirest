@@ -18,7 +18,7 @@ class CreatePerpanjanganTable extends Migration
             $table->unsignedBigInteger('id_konten');
             $table->string('status')->default('verifikasi');
             $table->integer('jumlah_hari');
-            $table->string('alasan');
+            $table->text('alasan');
 
             $table->foreign('id_konten')->references('id')->on('konten')->onDelete('cascade');
 

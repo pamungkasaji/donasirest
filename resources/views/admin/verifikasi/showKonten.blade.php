@@ -45,7 +45,7 @@
                                             <button class="btn btn-primary" type="submit" style="margin-top: 14px">Terima</button>
                                         </form>
                                     </td>
-                                    <td><button class="btn btn-warning" style="margin-left: 14px" data-toggle="modal" data-target="#confirmModal">
+                                    <td><button class="btn btn-warning" style="margin-left: 14px" <?php if ($konten->status == 'ditolak') { ?> disabled="disabled" <?php } ?> data-toggle="modal" data-target="#confirmModal">
                                             Tolak
                                         </button></td>
                                 </tr>

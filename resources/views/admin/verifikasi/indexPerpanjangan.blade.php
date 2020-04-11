@@ -29,6 +29,7 @@
                             <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">Judul</th>
+                                <th scope="col">Penggalang Dana</th>
                                 <th scope="col">Jumlah Hari</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Aksi</th>
@@ -42,8 +43,9 @@
                             <tr>
                                 <th>{{ $no1++ }}</th>
                                 <td>{{ $p->judul }}</td>
+                                <td>{{ $p->user->namalengkap }}</td>
                                 <td>{{ $p->perpanjangan->jumlah_hari }}</td>
-                                <td>{{ $p->status }}</td>
+                                <td>{{ $p->perpanjangan->status }}</td>
                                 <td>
                                     <a href=" {{ route('admin.verifikasi.perpanjangan.show', $p->id) }}"><button type="button" class="btn btn-primary">Detail</button>
                                 </td>
@@ -51,6 +53,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $perpanjangan->links() }}
 
                     <h5>Ditolak</h5>
 
@@ -59,6 +62,7 @@
                             <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">Judul</th>
+                                <th scope="col">Penggalang Dana</th>
                                 <th scope="col">Jumlah Hari</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Aksi</th>
@@ -72,15 +76,45 @@
                             <tr>
                                 <th>{{ $no2++ }}</th>
                                 <td>{{ $pd->judul }}</td>
+                                <td>{{ $pd->user->namalengkap }}</td>
                                 <td>{{ $pd->perpanjangan->jumlah_hari }}</td>
                                 <td>{{ $pd->status }}</td>
                                 <td>
-                                    <a href=" {{ route('admin.verifikasi.perpanjangan.show', $pd->id) }}"><button type="button" class="btn btn-primary">Detail</button>
+                                    <a href=" {{ route('admin.verifikasi.perpanjangan.show', $pd->id) }}"><button type="button" class="btn btn-primary">Detail</button></a>
+                                    <button class="btn btn-danger" style="margin-left: 10px" data-toggle="modal" data-target="#deleteModal{{ $pd->id }}">
+                                        Hapus
+                                    </button>
+
+                                    <div class="modal fade" id="deleteModal{{ $pd->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Hapus permintaan perpanjangan</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Pemberitahuan perpanjangan ditolak akan dihapus dari user</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                                    <form action="{{ route('admin.verifikasi.perpanjangan.delete', $pd->id)}}" method="post">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-primary" type="submit" style="margin: 10px">Hapus</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $perpanjangan_ditolak->links() }}
                 </div>
             </div>
 
