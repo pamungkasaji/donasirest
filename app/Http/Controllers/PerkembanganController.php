@@ -28,14 +28,14 @@ class PerkembanganController extends Controller
 
     public function store(Request $request, Konten $konten)
     {
-        $validator = Validator::make($request->all(), [
-            'judul' => 'required',
-            'deskripsi' => 'required',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'judul' => 'required',
+        //     'deskripsi' => 'required',
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json(['message' => 'Lengkapi form perkembangan'], 422);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['message' => 'Lengkapi form perkembangan'], 422);
+        // }
 
         $user = auth('api')->authenticate();
 
@@ -43,19 +43,17 @@ class PerkembanganController extends Controller
             return response()->json(['message' => 'Anda tidak memiliki akses pada fitur ini'], 401);
         }
 
-        $perkembangan = new Perkembangan();
-
+        $perkembangan = new Perkembangan($request->all());
+        
+        //jika ada gambar
         if ($request->has('gambar')) {
             //upload dan atur nama file
-            $file_name = uniqid() . str_slug($request->judul) . '.jpg';
-            $file_path = public_path() . '/images/perkembangan';
+            $file_name = uniqid().str_slug($request->judul).'.jpg';
+            $file_path = public_path().'/images/perkembangan';
             $request->file('gambar')->move($file_path, $file_name);
 
             $perkembangan->gambar = $file_name;
-        }
-
-        $perkembangan->judul = $request->judul;
-        $perkembangan->deskripsi = $request->deskripsi;
+        } 
 
         if ($konten->perkembangan()->save($perkembangan)) {
             $response = [
