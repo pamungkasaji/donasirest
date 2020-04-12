@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Perkembangan extends Model
 {
     protected $fillable = [
-        'judul', 'gambar','id_konten','deskripsi', 
+        'judul', 'gambar','id_konten','pengeluaran','penggunaan_dana','deskripsi', 
     ];
 
     protected $table = 'perkembangan';

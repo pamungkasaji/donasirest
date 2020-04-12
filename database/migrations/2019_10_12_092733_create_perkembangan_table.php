@@ -16,10 +16,10 @@ class CreatePerkembanganTable extends Migration
         Schema::create('perkembangan', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_konten');
-            $table->string('judul');
+            $table->string('judul')->nullable();
             $table->string('gambar')->nullable();
-            //$table->string('uangterpakai');
             $table->integer('pengeluaran')->nullable();
+            $table->string('penggunaan_dana')->nullable();
             $table->text('deskripsi');
             $table->foreign('id_konten')->references('id')->on('konten')->onDelete('cascade');
             
