@@ -13,7 +13,7 @@ class PerkembanganController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.jwt')->only('store');
+        $this->middleware('auth.jwt')->only('store, delete');
     }
 
     public function index(Konten $konten)
@@ -23,24 +23,15 @@ class PerkembanganController extends Controller
         return response()->json([
             'message' => 'Daftar perkembangan penggalangan dana',
             'data' => $perkembangan
-        ], 200);
+        ],200);
     }
 
     public function store(Request $request, Konten $konten)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'judul' => 'required',
-        //     'deskripsi' => 'required',
-        // ]);
-
-        // if ($validator->fails()) {
-        //     return response()->json(['message' => 'Lengkapi form perkembangan'], 422);
-        // }
-
         $user = auth('api')->authenticate();
 
-        if (!$user->konten()->where('konten.id_user', $konten->id_user)->first()) {
-            return response()->json(['message' => 'Anda tidak memiliki akses pada fitur ini'], 401);
+        if( !$user->konten()->where('konten.id_user', $konten->id_user)->first() ){
+            return response()->json(['message' => 'Anda tidak memiliki akses pada fitur ini'], 403);
         }
 
         $perkembangan = new Perkembangan($request->all());
@@ -60,9 +51,10 @@ class PerkembanganController extends Controller
                 'message' => "Perkembangan ditambahkan",
                 'perkembangan' => $perkembangan
             ];
-            return response()->json($response, 201);
+            return response()->json($response,201);
         } else {
-            return response()->json(['message' => 'Terjadi kesalahan penambahan perkembangan'], 500);
+            return response()->json([
+                'message' => 'Terjadi kesalahan penambahan perkembangan'], 404);
         }
     }
 }
