@@ -85,7 +85,6 @@ class DonaturController extends Controller
             ->where('donatur.is_diterima', false)
             ->where('users.id', $user->id)
             ->orderBy('judul')
-            ->first()
             ->get();
 
         if (!$donatur) {

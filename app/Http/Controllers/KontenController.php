@@ -74,9 +74,11 @@ class KontenController extends Controller
     {
         $konten = Konten::where([
             ['judul', 'LIKE', '%' . $judul . '%'],
-            ['status', '!=', 'verifikasi']
+            ['status', '!=', 'verifikasi'],
+            ['status', '!=', 'ditolak']
         ])
-            ->get();
+        ->with('user')
+        ->get();
 
         return response()->json([
             'message' => 'Daftar konten penggalangan dana',
