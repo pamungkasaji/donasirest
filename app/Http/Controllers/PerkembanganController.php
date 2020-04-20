@@ -47,14 +47,9 @@ class PerkembanganController extends Controller
         } 
 
         if ($konten->perkembangan()->save($perkembangan)) {
-            $response = [
-                'message' => "Perkembangan ditambahkan",
-                'perkembangan' => $perkembangan
-            ];
-            return response()->json($response,201);
+            return response()->json(['message' => 'Perkembangan ditambahkan'],201);
         } else {
-            return response()->json([
-                'message' => 'Terjadi kesalahan penambahan perkembangan'], 404);
+            return response()->json(['message' => 'Terjadi kesalahan penambahan perkembangan'], 404);
         }
     }
 }

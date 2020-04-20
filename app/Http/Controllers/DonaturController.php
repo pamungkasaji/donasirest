@@ -63,12 +63,7 @@ class DonaturController extends Controller
         $donatur->nohp = $request->nohp;
 
         if ($konten->donatur()->save($donatur)) {
-            $response = [
-                'message' => "Tunggu verifikasi penggalang dana",
-                'path' => $file_path,
-                'donatur' => $donatur
-            ];
-            return response()->json($response, 201);
+            return response()->json(['message' => 'Tunggu verifikasi penggalang dana'], 201);
         } else {
             return response()->json(['message' => 'Terjadi kesalahan donasi'], 500);
         }

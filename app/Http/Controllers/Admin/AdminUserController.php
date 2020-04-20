@@ -27,7 +27,14 @@ class AdminUserController extends Controller
 
     public function delete($id)
     {
-        User::where('id', $id)->delete();
+        $user = User::find($id);
+
+        //cari path file untuk menghapus gambar
+        $file_path = public_path() . '/images/ktp/' . $user->fotoktp;
+
+        //hapus file dan record db
+        unlink($file_path);
+        $user->delete();
 
         return redirect()->route('admin.user.index')
                         ->with('warning','Akun penggalang dana dihapus');

@@ -79,19 +79,61 @@
   <table width="100%">
     <tr>
       <td width="45%"></td>
+      <td><strong>Daftar Pengeluaran :</strong></td>
+    </tr>
+
+  </table>
+
+
+  <table align="center" width="100%">
+    <thead style="background-color: lightgray;">
+      <tr>
+        <th width="10%">No</th>
+        <th width="15%">Tanggal</th>
+        <th width="55%">Deskripsi Penggunaan Dana</th>
+        <th width="20%">Jumlah (Rp)</th>
+      </tr>
+    </thead>
+    <tbody>
+      @php
+      $no = 1;
+      $total = 0
+      @endphp
+      @foreach($pengeluaran as $p)
+      <tr>
+        <th scope="row">{{ $no++ }}</th>
+        <td align="right"> {{ $p->created_at }} </td>
+        <td>{{ $p->deskripsi }}</td>
+        <td align="right">{{ number_format($p->pengeluaran, 0, ',', '.') }}</td>
+      </tr>
+      @endforeach
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="2"></td>
+        <td align="right">Total</td>
+        <td align="right" class="gray">Rp. {{ number_format($pengeluaran->sum('pengeluaran'), 0, ',', '.') }}</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <br/>
+  <table width="100%">
+    <tr>
+      <td width="45%"></td>
       <td><strong>Daftar Donatur :</strong></td>
     </tr>
 
   </table>
 
 
-  <table align="center" width="90%">
+  <table align="center" width="100%">
     <thead style="background-color: lightgray;">
       <tr>
-        <th>No</th>
-        <th>Nama</th>
-        <th>Tanggal</th>
-        <th>Jumlah (Rp)</th>
+        <th width="10%">No</th>
+        <th width="15%">Tanggal</th>
+        <th width="55%">Nama</th>
+        <th width="20%">Jumlah (Rp)</th>
       </tr>
     </thead>
     <tbody>
@@ -101,8 +143,8 @@
       @foreach($donatur as $d)
       <tr>
         <th scope="row">{{ $no++ }}</th>
-        <td> {{ $d->nama }} </td>
         <td align="right">{{ $d->created_at }}</td>
+        <td> {{ $d->nama }} </td>
         <td align="right">{{ number_format($d->jumlah, 0, ',', '.') }}</td>
       </tr>
       @endforeach
