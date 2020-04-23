@@ -21,7 +21,7 @@ class DonaturController extends Controller
     public function index(Konten $konten)
     {
         //ambil daftar donatur yg sudah diterima
-        $donatur = $konten->donatur()->where('is_diterima', true)->latest()->get();
+        $donatur = $konten->donatur()->where('is_diterima', true)->latest()->get()->makeHidden(['nohp','id_konten','is_diterima','bukti']);
 
         //ubah nama menjadi anonim untuk is_anonim true
         foreach ($donatur as $key => $value) {
@@ -65,7 +65,7 @@ class DonaturController extends Controller
         if ($konten->donatur()->save($donatur)) {
             return response()->json(['message' => 'Tunggu verifikasi penggalang dana'], 201);
         } else {
-            return response()->json(['message' => 'Terjadi kesalahan donasi'], 500);
+            return response()->json(['message' => 'Terjadi kesalahan pemberian donasi'], 500);
         }
     }
 

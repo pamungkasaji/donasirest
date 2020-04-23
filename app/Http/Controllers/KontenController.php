@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\Konten;
-use App\Http\Resources\KontenResource;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 
@@ -22,7 +21,7 @@ class KontenController extends Controller
         $konten = Konten::with('user')->where('status', '!=', 'verifikasi')->where('status', '!=', 'ditolak')->get();
 
         return response()->json([
-            'message' => 'Daftar konten penggalangan dana',
+            'message' => 'Daftar konten donasi',
             'data' => $konten
         ], 200);
     }
@@ -81,7 +80,7 @@ class KontenController extends Controller
         ->get();
 
         return response()->json([
-            'message' => 'Daftar konten penggalangan dana',
+            'message' => 'Daftar konten donasi',
             'data' => $konten
         ], 200);
     }
@@ -94,7 +93,7 @@ class KontenController extends Controller
         $konten = $user->konten()->with('user')->get();
 
         return response()->json([
-            'message' => 'Daftar konten penggalangan dana',
+            'message' => 'Daftar konten donasi user',
             'data' => $konten
         ], 200);
     }
@@ -107,11 +106,11 @@ class KontenController extends Controller
         $konten = $user->konten()->with('user', 'perpanjangan')->find($id);
 
         if (!$konten) {
-            return response()->json(['message' => 'Konten penggalangan dana tidak ditemukan'], 404);
+            return response()->json(['message' => 'Konten donasi tidak ditemukan'], 404);
         }
 
         return response()->json([
-            'message' => 'Detail konten penggalangan dana',
+            'message' => 'Detail konten donasi',
             'konten' => $konten
         ], 200);
     }

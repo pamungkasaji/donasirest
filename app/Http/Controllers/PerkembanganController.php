@@ -21,7 +21,7 @@ class PerkembanganController extends Controller
         $perkembangan = $konten->perkembangan()->orderBy('created_at', 'desc')->get();
 
         return response()->json([
-            'message' => 'Daftar perkembangan penggalangan dana',
+            'message' => 'Daftar perkembangan donasi',
             'data' => $perkembangan
         ],200);
     }
