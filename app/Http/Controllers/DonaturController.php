@@ -101,7 +101,7 @@ class DonaturController extends Controller
 
         //mencari tahu apakan user memiliki akses ke konten
         if (!$user->konten()->where('konten.id_user', $konten->id_user)->first()) {
-            return response()->json(['message' => 'Anda tidak memiliki akses pada fitur ini'], 401);
+            return response()->json(['message' => 'Anda tidak memiliki akses'], 401);
         }
 
         if ($request->has('is_diterima')) {
@@ -123,7 +123,7 @@ class DonaturController extends Controller
 
         //mencari tahu apakan user memiliki akses ke konten
         if (!$user->konten()->where('konten.id_user', $konten->id_user)->first()) {
-            return response()->json(['message' => 'Anda tidak memiliki akses pada fitur ini'], 401);
+            return response()->json(['message' => 'Anda tidak memiliki akses'], 401);
         }
 
         //cari path file

@@ -21,7 +21,7 @@ Route::get('konten', 'KontenController@index');
 Route::post('konten', 'KontenController@store');
 Route::get('konten/judul/{judul}', 'KontenController@showByJudul');
 Route::get('user/me/konten', 'KontenController@indexUser');
-Route::get('user/me/konten/{id}', 'KontenController@showUser');
+Route::get('user/me/konten/{id}', 'KontenController@isUser');
 
 Route::post('login', 'AuthApiController@login');
 Route::post('register', 'AuthApiController@register');

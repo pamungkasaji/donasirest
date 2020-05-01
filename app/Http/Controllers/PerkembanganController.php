@@ -31,7 +31,7 @@ class PerkembanganController extends Controller
         $user = auth('api')->authenticate();
 
         if( !$user->konten()->where('konten.id_user', $konten->id_user)->first() ){
-            return response()->json(['message' => 'Anda tidak memiliki akses pada fitur ini'], 403);
+            return response()->json(['message' => 'Anda tidak memiliki akses'], 401);
         }
 
         $perkembangan = new Perkembangan($request->all());
@@ -49,7 +49,7 @@ class PerkembanganController extends Controller
         if ($konten->perkembangan()->save($perkembangan)) {
             return response()->json(['message' => 'Perkembangan ditambahkan'],201);
         } else {
-            return response()->json(['message' => 'Terjadi kesalahan penambahan perkembangan'], 404);
+            return response()->json(['message' => 'Terjadi kesalahan penambahan perkembangan'], 500);
         }
     }
 }

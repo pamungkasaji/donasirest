@@ -60,9 +60,7 @@ class KontenController extends Controller
         $konten->bank = $request->bank;
 
         if ($user->konten()->save($konten)) {
-            return response()->json([
-                'message' => 'Tunggu verifikasi kami'
-            ], 201);
+            return response()->json(['message' => 'Tunggu verifikasi kami'], 201);
         } else {
             return response()->json(['message' => 'Terjadi kesalahan'], 500);
         }
@@ -99,19 +97,16 @@ class KontenController extends Controller
     }
 
     //detail konten donasi yang dibuat user
-    public function showUser($id)
+    public function isUser($id)
     {
         $user = auth('api')->authenticate();
 
         $konten = $user->konten()->with('user', 'perpanjangan')->find($id);
 
         if (!$konten) {
-            return response()->json(['message' => 'Konten donasi tidak ditemukan'], 404);
+            return response()->json(['message' => 'Bukan penggalang dana'], 404);
         }
 
-        return response()->json([
-            'message' => 'Detail konten donasi',
-            'konten' => $konten
-        ], 200);
+        return response()->json(['message' => 'Detail konten donasi penggalang dana'],200);
     }
 }

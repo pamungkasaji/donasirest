@@ -41,7 +41,7 @@ class PerpanjanganController extends Controller
                 return response()->json(['message' => 'Anda sudah mengajukan perpanjangan sebelumnya'], 403);
             }
         } else {
-            return response()->json(['message' => 'Target penggalangan dana sudah terpenuhi. Anda tidak bisa mengajukan perpanjangan'], 403);
+            return response()->json(['message' => 'Target donasi terpenuhi, anda tidak bisa mengajukan perpanjangan'], 403);
         }
 
         $perpanjangan = new Perpanjangan($request->all());

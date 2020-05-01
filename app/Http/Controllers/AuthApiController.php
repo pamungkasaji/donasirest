@@ -49,7 +49,7 @@ class AuthApiController extends Controller
         if ($user->save()) {
             return response()->json(['message' => 'Tunggu verifikasi kami'], 201);
         } else {
-            return response()->json(['message' => 'Terjadi kesalahan'], 404);
+            return response()->json(['message' => 'Terjadi kesalahan registrasi'], 500);
         }
     }
 
@@ -75,6 +75,8 @@ class AuthApiController extends Controller
         } else {
             return response()->json(['message' => 'Verifikasi anda ditolak'], 403);
         }
+
+        return response()->json(['message' => 'Terjadi kesalahan login'], 500);
     }
 
     public function logout()
