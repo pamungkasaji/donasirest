@@ -114,7 +114,7 @@ class VerifikasiController extends Controller
 
     public function deletePerpanjangan($id)
     {
-        Konten::where('id', $id)->delete();
+        Perpanjangan::where('id', $id)->delete();
 
         return redirect()->route('admin.verifikasi.perpanjangan.index')
                         ->with('warning','Permintaan perpanjangan dihapus');
