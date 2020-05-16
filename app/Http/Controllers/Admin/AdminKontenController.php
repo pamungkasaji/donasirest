@@ -55,7 +55,7 @@ class AdminKontenController extends Controller
     public function print($id){
         $konten = Konten::with('user')->find($id);
         $donatur = Donatur::where('id_konten', $id)->get();
-        $pengeluaran = Perkembangan::where('pengeluaran', '!=', null)->get();
+        $penggunaan_dana = Perkembangan::where('penggunaan_dana', '!=', null)->get();
 
         foreach($donatur as &$value) {
             $d = substr($value['created_at'],8,2);
@@ -65,7 +65,7 @@ class AdminKontenController extends Controller
             $value['created_at'] = $d.'-'.$m.'-'.$y;
         }
 
-        foreach($pengeluaran as &$value) {
+        foreach($penggunaan_dana as &$value) {
             $d = substr($value['created_at'],8,2);
             $m = substr($value['created_at'],5,2);
             $y = substr($value['created_at'],0,4);
@@ -75,7 +75,7 @@ class AdminKontenController extends Controller
 
         $data['konten'] = $konten;
         $data['donatur'] = $donatur;
-        $data['pengeluaran'] = $pengeluaran;
+        $data['penggunaan_dana'] = $penggunaan_dana;
 
         $pdf = PDF::loadView('admin.konten.print', $data);
         return $pdf->download(str_slug($konten->judul).'.pdf');
