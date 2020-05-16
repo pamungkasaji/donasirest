@@ -107,6 +107,9 @@ class KontenController extends Controller
             return response()->json(['message' => 'Bukan penggalang dana'], 404);
         }
 
-        return response()->json(['message' => 'Detail konten donasi penggalang dana'],200);
+        return response()->json([
+            'message' => 'Detail konten penggalangan dana',
+            'konten' => $konten
+        ], 200);
     }
 }

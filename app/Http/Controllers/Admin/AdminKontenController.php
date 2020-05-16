@@ -55,7 +55,7 @@ class AdminKontenController extends Controller
     public function print($id){
         $konten = Konten::with('user')->find($id);
         $donatur = Donatur::where('id_konten', $id)->get();
-        $penggunaan_dana = Perkembangan::where('penggunaan_dana', '!=', null)->get();
+        $penggunaan_dana = Perkembangan::where('id_konten', $id)->where('penggunaan_dana', '!=', null)->get();
 
         foreach($donatur as &$value) {
             $d = substr($value['created_at'],8,2);
