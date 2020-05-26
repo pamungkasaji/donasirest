@@ -17,8 +17,8 @@
                 <div class="col-sm-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Verifikasi Konten Donasi</h5>
-                            <p class="card-text">Konten donasi akan ditampilkan pada aplikasi setelah jika verifikasi diterima </p>
+                            <h5 class="card-title">Verifikasi Konten</h5>
+                            <p class="card-text">Konten penggalangan dana akan ditampilkan pada aplikasi setelah jika verifikasi diterima </p>
                             <a href="{{ route('admin.verifikasi.konten.index') }}" class="btn btn-primary">Masuk</a>
                         </div>
                     </div>
