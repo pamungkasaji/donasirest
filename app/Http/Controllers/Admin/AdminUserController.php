@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Konten;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminUserController extends Controller
 {
@@ -19,8 +20,14 @@ class AdminUserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-
-        $konten = $user->konten()->where('status','aktif')->orWhere('status','selesai')->get();
+        
+        $konten = DB::table('konten')
+        ->where('id_user', '=', $user->id)
+        ->where(function ($query) {
+            $query->where('status','=','aktif')
+                  ->orWhere('status','=','selesai');
+        })
+        ->get();
   
         return view('admin.user.show', compact('user','konten'));
     }
