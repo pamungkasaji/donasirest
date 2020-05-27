@@ -20,6 +20,13 @@ class KontenController extends Controller
     {
         $konten = Konten::with('user')->where('status', '!=', 'verifikasi')->where('status', '!=', 'ditolak')->get();
 
+        foreach ($konten as $k) {
+            $k->links = [
+                'donatur' => 'konten/' . $k->id . '/donatur',
+                'perkembangan' => 'konten/' . $k->id . '/perkembangan'
+            ];
+        }
+
         return response()->json([
             'message' => 'Daftar konten donasi',
             'data' => $konten
