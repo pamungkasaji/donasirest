@@ -112,13 +112,13 @@ class VerifikasiController extends Controller
                         ->with('warning','Verifikasi perpanjangan ditolak');
     }
 
-    public function deletePerpanjangan($id)
-    {
-        Konten::where('id', $id)->delete();
+    // public function deletePerpanjangan($id)
+    // {
+    //     Perpanjangan::where('id', $id)->delete();
 
-        return redirect()->route('admin.verifikasi.perpanjangan.index')
-                        ->with('warning','Permintaan perpanjangan dihapus');
-    }
+    //     return redirect()->route('admin.verifikasi.perpanjangan.index')
+    //                     ->with('warning','Permintaan perpanjangan dihapus');
+    // }
 
     public function indexUser()
     {

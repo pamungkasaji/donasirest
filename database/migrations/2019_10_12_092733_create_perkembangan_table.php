@@ -18,8 +18,7 @@ class CreatePerkembanganTable extends Migration
             $table->unsignedBigInteger('id_konten');
             $table->string('judul')->nullable();
             $table->string('gambar')->nullable();
-            $table->integer('pengeluaran')->nullable();
-            $table->string('penggunaan_dana')->nullable();
+            $table->integer('penggunaan_dana')->nullable();
             $table->text('deskripsi');
             $table->foreign('id_konten')->references('id')->on('konten')->onDelete('cascade');
             
