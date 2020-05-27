@@ -84,6 +84,13 @@ class KontenController extends Controller
         ->with('user')
         ->get();
 
+        foreach ($konten as $k) {
+            $k->links = [
+                'donatur' => 'konten/' . $k->id . '/donatur',
+                'perkembangan' => 'konten/' . $k->id . '/perkembangan'
+            ];
+        }
+
         return response()->json([
             'message' => 'Daftar konten donasi',
             'data' => $konten
@@ -96,6 +103,13 @@ class KontenController extends Controller
         $user = auth('api')->authenticate();
 
         $konten = $user->konten()->with('user')->get();
+
+        foreach ($konten as $k) {
+            $k->links = [
+                'donatur' => 'konten/' . $k->id . '/donatur',
+                'perkembangan' => 'konten/' . $k->id . '/perkembangan'
+            ];
+        }
 
         return response()->json([
             'message' => 'Daftar konten donasi user',
