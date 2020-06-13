@@ -34,12 +34,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @php
-                            $no = 1;
-                        @endphp
-                            @foreach($users as $user)
+                            @foreach($users as $key => $user)
                             <tr>
-                                <th>{{ $no++ }}</th>
+                                <th>{{ $users->firstItem() + $key }}</th>
                                 <td>{{ $user->namalengkap }}</td>
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->nohp }}</td>

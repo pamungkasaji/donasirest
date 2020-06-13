@@ -35,12 +35,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                            $no = 1;
-                            @endphp
-                            @foreach($kontens as $konten)
+                            @foreach($kontens as $key => $konten)
                             <tr>
-                                <th>{{ $no++ }}</th>
+                                <th>{{ $kontens->firstItem() + $key }}</th>
                                 <td>{{ $konten->judul }}</td>
                                 <td>Rp. <?php echo number_format($konten->target, 0, ',', '.'); ?></td>
                                 <td>{{ $konten->lama_donasi }}</td>

@@ -37,12 +37,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                            $no1 = 1;
-                            @endphp
-                            @foreach($konten as $k)
+                            @foreach($konten as $key => $k)
                             <tr>
-                                <th>{{ $no1++ }}</th>
+                                <th>{{ $konten->firstItem() + $key }}</th>
                                 <td>{{ $k->judul }}</td>
                                 <td>Rp. <?php echo number_format($k->target, 0, ',', '.'); ?></td>
                                 <td>{{ $k->lama_donasi }}</td>
@@ -56,9 +53,10 @@
                         </tbody>
                     </table>
                     {{ $konten->links() }}
+                    <br>
 
                     <h5>Ditolak</h5>
-
+                    <p>Tabel ditolak untuk pemberitahuan pada pengguna bahwa verifikasi konten penggalangan dana ditolak</p>
                     <table class="table">
                         <thead>
                             <tr>
@@ -71,12 +69,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                            $no2 = 1;
-                            @endphp
-                            @foreach($konten_ditolak as $kd)
+                            @foreach($konten_ditolak as $keyd => $kd)
                             <tr>
-                                <th>{{ $no2++ }}</th>
+                                <th>{{ $konten_ditolak->firstItem() + $keyd }}</th>
                                 <td>{{ $kd->judul }}</td>
                                 <td>Rp. <?php echo number_format($kd->target, 0, ',', '.'); ?></td>
                                 <td>{{ $kd->lama_donasi }}</td>

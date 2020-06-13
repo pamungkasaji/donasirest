@@ -36,12 +36,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                            $no1 = 1;
-                            @endphp
-                            @foreach($user as $u)
+                            @foreach($user as $key => $u)
                             <tr>
-                                <th>{{ $no1++ }}</th>
+                                <th>{{ $user->firstItem() + $key }}</th>
                                 <td>{{ $u->namalengkap }}</td>
                                 <td>{{ $u->username }}</td>
                                 <td>{{ $u->nohp }}</td>
@@ -54,9 +51,10 @@
                         </tbody>
                     </table>
                     {{ $user->links() }}
-
+                    <br>
+                    
                     <h5>Ditolak</h5>
-
+                    <p>Tabel ditolak untuk pemberitahuan pada pengguna bahwa verifikasi penggalang dana ditolak</p>
                     <table class="table">
                         <thead>
                             <tr>
@@ -68,12 +66,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                            $no2 = 1;
-                            @endphp
-                            @foreach($user_ditolak as $ud)
+                            @foreach($user_ditolak as $keyd => $ud)
                             <tr>
-                                <th>{{ $no2++ }}</th>
+                                <th>{{ $user_ditolak->firstItem() + $keyd }}</th>
                                 <td>{{ $ud->namalengkap }}</td>
                                 <td>{{ $ud->username }}</td>
                                 <td>{{ $ud->nohp }}</td>
