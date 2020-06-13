@@ -38,7 +38,7 @@
                         <tbody>
                             @foreach($perpanjangan as $key => $p)
                             <tr>
-                                <th>{{ $$perpanjangan->firstItem() + $key }}</th>
+                                <th>{{ $perpanjangan->firstItem() + $key }}</th>
                                 <td>{{ $p->judul }}</td>
                                 <td>{{ $p->user->namalengkap }}</td>
                                 <td>{{ $p->perpanjangan->jumlah_hari }}</td>
