@@ -52,7 +52,7 @@
                     <h5 class="my-3">Informasi Perpanjangan</h5>
                     <table>
                         <tr>
-                            <td width="15%">Status Perpanjangan</td>
+                            <td>Status</td>
                             <td>:</td>
                             <td>{{ $kontenPerpanjangan->perpanjangan->status }}</td>
                         </tr>
